@@ -1,0 +1,6 @@
+# Python (mcp-server)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
