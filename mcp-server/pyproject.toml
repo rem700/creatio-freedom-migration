@@ -1,0 +1,14 @@
+[project]
+name = "creatio-migration-mcp"
+version = "1.0.0"
+description = "MCP server for Creatio Classic UI to Freedom UI migration recipes"
+requires-python = ">=3.10"
+license = "MIT"
+# recipe_search.py needs only the standard library; the MCP SDK is for server.py.
+dependencies = ["mcp>=1.2"]
+
+[project.scripts]
+creatio-migration-mcp = "server:main"
+
+[tool.setuptools]
+py-modules = ["server", "recipe_search"]

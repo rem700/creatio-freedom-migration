@@ -1,0 +1,107 @@
+# Search regression cases: query<TAB>recipe id expected in the top 3,
+# or "-" when no top-3 hit may count as being about the query.
+# Run: python tools/check_recipes.py   (also runs in CI)
+lookupListConfig	Recipes/Attributes/HowToMigrateLookupFilter
+filter a lookup field	Recipes/Attributes/HowToMigrateLookupFilter
+plan classic to freedom migration	Recipes/Strategy/HowToPlanClassicToFreedomMigration
+what must be redesigned when moving to Freedom UI	Recipes/Strategy/HowToPlanClassicToFreedomMigration
+classic api freedom equivalent cheat sheet	Recipes/Strategy/ApiMappingReference
+api mapping table	Recipes/Strategy/ApiMappingReference
+diff attributes methods mixins mapping	Recipes/Strategy/SchemaStructureMappingReference
+mixins	Recipes/Strategy/SchemaStructureMappingReference
+Form page preferences	Recipes/Strategy/HowToReplaceClassicPageWithFreedomPage
+replace classic page with freedom page	Recipes/Strategy/HowToReplaceClassicPageWithFreedomPage
+run classic and freedom side by side	Recipes/Strategy/HowToRunClassicAndFreedomSideBySide
+share logic between classic and freedom pages	Recipes/Strategy/HowToRunClassicAndFreedomSideBySide
+onEntityInitialized	Recipes/Lifecycle/HowToMigrateInitAndOnEntityInitialized
+init method HandleViewModelInitRequest	Recipes/Lifecycle/HowToMigrateInitAndOnEntityInitialized
+onSaved	Recipes/Lifecycle/HowToMigrateSaveOverride
+override save method	Recipes/Lifecycle/HowToMigrateSaveOverride
+setValidationConfig	Recipes/Lifecycle/HowToMigrateValidationConfig
+addColumnValidator	Recipes/Lifecycle/HowToMigrateValidationConfig
+asyncValidate	Recipes/Lifecycle/HowToMigrateAsyncValidate
+Terrasoft.chain validation before save	Recipes/Lifecycle/HowToMigrateAsyncValidate
+onRender	Recipes/Lifecycle/HowToMigrateOnRenderAndDomAccess
+document.querySelector DOM access	Recipes/Lifecycle/HowToMigrateOnRenderAndDomAccess
+destroy	Recipes/Lifecycle/HowToMigrateDestroyAndCleanup
+release listeners when page closes	Recipes/Lifecycle/HowToMigrateDestroyAndCleanup
+isAddMode	Recipes/Lifecycle/HowToMigrateNewRecordDetection
+isCopyMode new record	Recipes/Lifecycle/HowToMigrateNewRecordDetection
+VIRTUAL_COLUMN attribute	Recipes/Attributes/HowToMigrateAttributeDeclaration
+dataValueType attribute declaration	Recipes/Attributes/HowToMigrateAttributeDeclaration
+dependencies methodName	Recipes/Attributes/HowToMigrateAttributeDependencies
+IsEntityInitialized	Recipes/Attributes/HowToMigrateAttributeDependencies
+isRequired bindTo	Recipes/Attributes/HowToMigrateEnabledVisibleRequired
+enabled visible bindTo	Recipes/Attributes/HowToMigrateEnabledVisibleRequired
+dependent lookup country city	Recipes/Attributes/HowToMigrateDependentLookup
+FILTRATION autoClean	Recipes/Attributes/HowToMigrateDependentLookup
+this.get this.set	Recipes/Attributes/HowToMigrateFieldValueReadWrite
+read field value	Recipes/Attributes/HowToMigrateFieldValueReadWrite
+Resources.Strings	Recipes/Attributes/HowToMigrateLocalizableStrings
+localizable strings	Recipes/Attributes/HowToMigrateLocalizableStrings
+businessRules BusinessRuleModule	Recipes/Attributes/HowToMigrateBusinessRules
+BINDPARAMETER	Recipes/Attributes/HowToMigrateBusinessRules
+getEntityCollection	Recipes/Data/HowToMigrateEsqQueries
+EntitySchemaQuery addColumn	Recipes/Data/HowToMigrateEsqQueries
+Terrasoft.ComparisonType.EQUAL	Recipes/Data/HowToMigrateFilters
+createFilterGroup LogicalOperatorType	Recipes/Data/HowToMigrateFilters
+UpdateQuery	Recipes/Data/HowToMigrateInsertUpdateDelete
+InsertQuery setParameterValue	Recipes/Data/HowToMigrateInsertUpdateDelete
+Terrasoft.BatchQuery	Recipes/Data/HowToMigrateBatchQuery
+save several records in one transaction	Recipes/Data/HowToMigrateBatchQuery
+ServiceHelper.callService	Recipes/Data/HowToMigrateServiceHelperCalls
+call configuration web service	Recipes/Data/HowToMigrateServiceHelperCalls
+querySysSettingsItem	Recipes/Data/HowToMigrateSysSettings
+system setting value	Recipes/Data/HowToMigrateSysSettings
+list shows all rows dependencies	Recipes/Lists/HowToMigrateDetailToList
+addToolsButtonMenuItems	Recipes/Lists/HowToMigrateDetailToolbarButtons
+detail toolbar button	Recipes/Lists/HowToMigrateDetailToolbarButtons
+LookupMultiAddMixin	Recipes/Lists/HowToMigrateMultiSelectAdd
+openLookupWithMultiSelect	Recipes/Lists/HowToMigrateMultiSelectAdd
+ConfigurationGrid	Recipes/Lists/HowToMigrateEditableDetail
+editable detail inline	Recipes/Lists/HowToMigrateEditableDetail
+details defaultValues masterColumn	Recipes/Lists/HowToMigrateDetailDefaultValues
+default values new detail record	Recipes/Lists/HowToMigrateDetailDefaultValues
+FileDetailV2	Recipes/Lists/HowToMigrateFileDetail
+upload file attachments	Recipes/Lists/HowToMigrateFileDetail
+GetColumnsValues	Recipes/Lists/HowToMigrateDetailPageMessaging
+UpdateCardProperty	Recipes/Lists/HowToMigrateDetailPageMessaging
+getSectionActions	Recipes/Sections/HowToMigrateSectionActions
+SelectedRows	Recipes/Sections/HowToMigrateSectionActions
+FixedFilterConfig	Recipes/Sections/HowToMigrateSectionFilters
+section quick filter	Recipes/Sections/HowToMigrateSectionFilters
+addGridDataColumns	Recipes/Sections/HowToMigrateGridColumns
+grid columns	Recipes/Sections/HowToMigrateGridColumns
+mini page	Recipes/Sections/HowToMigrateMiniPage
+isMiniPageModelItem	Recipes/Sections/HowToMigrateMiniPage
+SeparateModeAddRecordButton	Recipes/Sections/HowToMigrateSectionModesAndButtons
+section modes combined separate	Recipes/Sections/HowToMigrateSectionModesAndButtons
+Terrasoft.ViewItemType.BUTTON	Recipes/UI/HowToMigrateDiffButtons
+button click enabled bindTo	Recipes/UI/HowToMigrateDiffButtons
+setActiveTab	Recipes/UI/HowToMigrateTabs
+tab panel	Recipes/UI/HowToMigrateTabs
+showConfirmationDialog	Recipes/UI/HowToMigrateDialogs
+Terrasoft.MessageBoxButtons.YES.returnCode	Recipes/UI/HowToMigrateDialogs
+showBodyMask	Recipes/UI/HowToMigrateBodyMask
+controlConfig className custom control	Recipes/UI/HowToMigrateCustomControl
+Ext.define Terrasoft.controls	Recipes/UI/HowToMigrateCustomControl
+sandbox.publish	Recipes/Messaging/HowToMigrateSandboxMessages
+Terrasoft.MessageMode.PTP	Recipes/Messaging/HowToMigrateSandboxMessages
+Terrasoft.ServerChannel	Recipes/Messaging/HowToMigrateServerChannel
+Terrasoft.EventName.ON_MESSAGE	Recipes/Messaging/HowToMigrateServerChannel
+ProcessModuleUtilities.executeProcess	Recipes/Messaging/HowToMigrateProcessLaunch
+process output parameters	Recipes/Messaging/HowToMigrateProcessLaunch
+Terrasoft.SysValue.CURRENT_USER_CONTACT	Recipes/Messaging/HowToMigrateCurrentUser
+current user contact	Recipes/Messaging/HowToMigrateCurrentUser
+RightUtilities.checkCanExecuteOperation	Recipes/Messaging/HowToMigrateOperationRights
+operation permission check	Recipes/Messaging/HowToMigrateOperationRights
+Terrasoft.Features.getIsEnabled	Recipes/Messaging/HowToMigrateFeatureToggles
+feature toggle	Recipes/Messaging/HowToMigrateFeatureToggles
+what breaks silently when porting Classic code	Recipes/Pitfalls/MigrationPitfalls
+empty selection all records	Recipes/Pitfalls/MigrationPitfalls
+# Negative cases: topics with no recipe; the server must flag them.
+kubernetes deployment	-
+mobile app offline sync	-
+detail shows all rows	Recipes/Lists/HowToMigrateDetailToList
+list shows every record	Recipes/Lists/HowToMigrateDetailToList
+crt.SaveRecordsRequest	Recipes/Lists/HowToMigrateEditableDetail
