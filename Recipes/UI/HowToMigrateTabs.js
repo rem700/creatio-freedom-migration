@@ -45,10 +45,12 @@
 //   attribute does not switch the tab. A wrong panel name in the attribute
 //   ("TabPanel_Profile") just creates a new, unused attribute.
 //
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://community.creatio.com/node/37945
 // Source: https://community.creatio.com/node/40873
 // Source: https://community.creatio.com/questions/setting-default-tab-page
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/front-end-development/freedom-ui/client-schema-freedomui/overview
+// Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/platform-customization/freedom-ui/page-customization-basics/references/tabpanel (selectedTabIndex: number, default 0)
 
 // ===== CLASSIC UI (7.x) =====================================================
 

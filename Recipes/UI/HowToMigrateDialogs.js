@@ -53,6 +53,7 @@
 //   Terrasoft.MessageBoxButtons.YES.returnCode, is always false: the action
 //   never runs and nothing is reported.
 //
+// Applies: Creatio 8.1+ (sdk.DialogService needs @creatio-devkit/common 0.814.0+; crt.NotificationRequest 8.0.10+ per community); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/dialog-window/overview
 // Source: https://customerfx.com/article/showing-a-message-dialog-or-confirmation-prompts-in-a-creatio-freedom-ui-page/
 // Source: https://customerfx.com/article/displaying-toast-message-popups-from-creatio-freedom-ui-pages/

@@ -46,6 +46,7 @@
 //   without one it polls for the rest of the session.
 //
 // See: Recipes/UI/HowToMigrateCustomControl.js
+// Applies: Creatio 8.1+ (registerViewElement in every published @creatio-devkit/common, 0.803.0+); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: registerViewElement)
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/converters
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/remote-modules/freedom-ui-remote-module/overview

@@ -44,6 +44,7 @@
 //   false. Likewise `r.A` on the getByCodes result is undefined (it is
 //   r.values.A). Always read `.value`.
 //
+// Applies: Creatio 8.1+ (SysSettingsService in every published @creatio-devkit/common, 0.803.0+); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: SysSettingsService, SysSetting, QuerySysSettingsResponse)
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/index.html#!/api/Terrasoft.core.SysSettings
 

@@ -1,6 +1,6 @@
 # creatio-freedom-migration
 
-**50 recipes for migrating Creatio Classic UI (7.x) client code to Freedom UI (8.1+).** Each
+**63 recipes for migrating Creatio Classic UI (7.x) client code to Freedom UI (8.1+).** Each
 recipe puts the Classic UI code next to its Freedom UI equivalent. It includes an API map,
 names what does **not** carry over one-to-one, and describes the silent failure you get from
 a line-by-line translation. An MCP server lets an AI assistant search the recipes.
@@ -28,23 +28,44 @@ community articles. Behaviour that is only observed is labelled as such.
 ## Contents
 
 ```
-Recipes/Strategy/     5   Planning, API cheat sheet, schema structure map, page replacement, coexistence
-Recipes/Lifecycle/    7   init, save, validation, asyncValidate, onRender/DOM, destroy, new-record check
+Recipes/Strategy/    11   Planning, rewrite-or-keep decision tree, API cheat sheet, schema structure map,
+                          version compatibility, page replacement, coexistence, generated names,
+                          debugging, review checklists, what does not migrate with the code
+Recipes/Example/      1   A complete record page migrated end to end
+Recipes/Lifecycle/    8   init, save, validation, asyncValidate, onRender/DOM, destroy, new-record check,
+                          mixins
 Recipes/Attributes/   8   declaration, dependencies, enabled/visible/required, lookup filters,
                           dependent lookups, field read/write, localizable strings, business rules
-Recipes/Data/         6   ESQ -> sdk.Model, filters, insert/update/delete, BatchQuery -> transactions,
-                          ServiceHelper -> HttpClientService, system settings
-Recipes/Lists/        7   details -> lists, toolbar buttons, multi-select add, editable lists,
-                          default values, files, detail <-> page messaging
+Recipes/Data/         7   ESQ -> sdk.Model, filters, insert/update/delete, BatchQuery -> transactions,
+                          ServiceHelper -> HttpClientService, system settings, slow async patterns
+Recipes/Lists/        8   details -> lists, toolbar buttons, multi-select add, editable lists,
+                          default values, files, detail <-> page messaging, approvals
 Recipes/Sections/     5   section actions, filters, grid columns, mini page, modes and buttons
-Recipes/UI/           5   buttons, tabs, dialogs, body mask, custom controls -> remote modules
+Recipes/UI/           8   buttons, tabs, dialogs, body mask, custom controls -> remote modules,
+                          printables, dashboards and charts, feed and timeline
 Recipes/Messaging/    6   sandbox messages, ServerChannel, processes, current user, rights, features
 Recipes/Pitfalls/     1   Checklist of everything that breaks silently
+tools/verify/             A test page that checks the "(observed)" claims on your instance
 ```
 
-Start with `Recipes/Strategy/HowToPlanClassicToFreedomMigration.js`. Use
-`Recipes/Strategy/ApiMappingReference.js` as the cheat sheet, and
-`Recipes/Pitfalls/MigrationPitfalls.js` as the review checklist for a converted schema.
+Where to start:
+
+1. Read `Recipes/Strategy/HowToPlanClassicToFreedomMigration.js` and decide per schema with
+   `Recipes/Strategy/RewriteOrKeepClassicDecisionTree.js`.
+2. Read `Recipes/Example/HowToMigrateACompleteRecordPage.js` to see one whole page migrated.
+3. While converting, use `Recipes/Strategy/ApiMappingReference.js` as the cheat sheet.
+4. Review the result with `Recipes/Strategy/MigrationChecklists.js` and
+   `Recipes/Pitfalls/MigrationPitfalls.js`.
+
+**Versions.** Every recipe has an `Applies:` line naming the Creatio versions it is valid for.
+Where a recipe needs a specific `@creatio-devkit/common` service, the line names the devkit
+version too. Creatio does not publish which devkit version each Creatio release ships;
+`Recipes/Strategy/VersionCompatibilityReference.js` explains how to check this on your
+instance.
+
+**Unverified behaviour.** Some claims are marked "(observed)" because no documentation states
+them. `tools/verify/` has a Freedom UI test page that checks most of them on your own
+instance. Use it on a test or dev instance only.
 
 ## Using it with an AI assistant
 

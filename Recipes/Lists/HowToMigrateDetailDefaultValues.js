@@ -47,6 +47,7 @@
 //   The same happens to rows created from a header button or a handler.
 //
 // See: Recipes/Lists/HowToMigrateDetailToList.js
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/platform-customization/freedom-ui/open-a-page-from-a-custom-handler/examples/open-a-typified-freedom-ui-page
 // Source: https://academy.creatio.com/docs/8.x/dev/development-on-creatio-platform/platform-customization/classic-ui/detail/references/basedetailv2
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: ModelInitConfig, ModelDefaultValue)

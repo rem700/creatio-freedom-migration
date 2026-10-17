@@ -54,6 +54,7 @@
 //   items. Also: the page does not refresh by itself - without a reload the
 //   user keeps seeing old values and may save them back over your change.
 //
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: Model.insert/update/delete, DataSourceSaveResult)
 // Source: https://www.npmjs.com/package/@creatio/base (typings: ɵDataSourceInsertResult)
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/ (Terrasoft.InsertQuery, UpdateQuery, DeleteQuery)

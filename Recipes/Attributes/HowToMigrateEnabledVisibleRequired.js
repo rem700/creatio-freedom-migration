@@ -50,6 +50,7 @@
 //
 // See: Recipes/Lifecycle/HowToMigrateValidationConfig.js
 // See: Recipes/Attributes/HowToMigrateBusinessRules.js
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/customize-page-fields/examples/set-up-the-requirement-condition-of-a-field
 // Source: https://customerfx.com/article/programatically-disabling-controls-on-a-creatio-freedom-ui-page/
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/ui-and-business-logic-customization/freedom-ui-business-rules

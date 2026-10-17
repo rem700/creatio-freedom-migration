@@ -40,6 +40,7 @@
 //   in the old Classic schema, renders an empty caption or the raw key text
 //   without an error (observed).
 //
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/customize-page-fields/overview
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/converters
 

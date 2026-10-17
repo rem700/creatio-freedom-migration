@@ -43,6 +43,8 @@ def check_recipe(r, issues: list[str]) -> None:
                 issues.append(f"{rel}: Terrasoft.* / Ext.* used in the Freedom UI half")
     if not r.sources:
         issues.append(f"{rel}: no 'Source: <url>' line")
+    if not re.search(r"^Applies:\s*\S", r.header, re.M):
+        issues.append(f"{rel}: no '// Applies: <versions>' line in the header")
     spaced = [n for n, l in enumerate(lines, 1) if re.match(r"^ {2,}\S", l)]
     if spaced:
         issues.append(f"{rel}: indented with spaces, not tabs (lines {spaced[:5]})")

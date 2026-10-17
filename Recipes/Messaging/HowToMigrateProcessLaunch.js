@@ -62,6 +62,7 @@
 //   nothing. "ForTheSelectedRecords"
 //   without crt.SkipIfSelectionEmpty turns an EMPTY selection into "every record".
 //
+// Applies: Creatio 8.1+ (sdk.ProcessEngineService needs @creatio-devkit/common 0.823.0+; the request needs no devkit); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/business-processes
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers (crt.RunBusinessProcessRequest parameters)
 // Source: https://community.creatio.com/node/39023

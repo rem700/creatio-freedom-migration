@@ -45,6 +45,7 @@
 //   makes the filter compare with nothing; fed into a "mine only" check, every
 //   comparison is false and the UI silently treats the user as a stranger.
 //
+// Applies: Creatio 8.1+ (SysValuesService in every published @creatio-devkit/common, 0.803.0+); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: SysValuesService, SysValues)
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/
 

@@ -38,6 +38,7 @@
 //   Translating "return false" into a bare `return` with no message leaves the
 //   user pressing a Save button that seems to do nothing.
 //
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 // Source: https://customerfx.com/article/saving-a-page-before-some-action-on-a-creatio-freedom-ui-page/
 

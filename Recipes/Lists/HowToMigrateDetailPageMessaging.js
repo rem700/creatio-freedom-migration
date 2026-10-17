@@ -43,6 +43,7 @@
 //   Promises into "[object Promise]" or NaN.
 //
 // See: Recipes/Lists/HowToMigrateDetailToList.js
+// Applies: Creatio 8.1+ (registerOnCollectionChangeCallback needs @creatio-devkit/common 0.832.0+); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/docs/8.x/dev/development-on-creatio-platform/platform-customization/classic-ui/detail/references/basedetailv2
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: ViewModelCollection, CHANGELOG 0.832.0)
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
