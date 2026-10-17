@@ -241,19 +241,9 @@ define("Contacts_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 				"propertyName": "items",
 				"index": 0
 			},
-			{
-				// #26: bound with "value" (not "control").
-				"operation": "insert",
-				"name": "UsrVerifyValueInput",
-				"values": {
-					"type": "crt.Input",
-					"label": "verify #26: value-bound (type 123)",
-					"value": "$UsrVerifyValueBound"
-				},
-				"parentName": "UsrVerifyPanel",
-				"propertyName": "items",
-				"index": 0
-			},
+			// #26: a crt.Input bound with "value" instead of "control" is NOT inserted:
+			// on Creatio 10.1 it throws in crt.Input (_modifyInputType reads "replace" of
+			// undefined) and the whole page stays behind the loading mask.
 			{
 				// #26: bound with "control".
 				"operation": "insert",
@@ -265,7 +255,7 @@ define("Contacts_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 				},
 				"parentName": "UsrVerifyPanel",
 				"propertyName": "items",
-				"index": 1
+				"index": 0
 			},
 			{
 				// #7: Classic keys "enabled" / "isRequired" on a Freedom element.
@@ -280,7 +270,7 @@ define("Contacts_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 				},
 				"parentName": "UsrVerifyPanel",
 				"propertyName": "items",
-				"index": 2
+				"index": 1
 			}
 		]/**SCHEMA_VIEW_CONFIG_DIFF*/,
 		viewModelConfigDiff: /**SCHEMA_VIEW_MODEL_CONFIG_DIFF*/[
