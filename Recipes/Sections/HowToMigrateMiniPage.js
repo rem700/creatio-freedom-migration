@@ -22,8 +22,8 @@
 //                                                    modelInitConfigs: [{ action: "add" | "edit", recordId,
 //                                                    defaultValues }] }
 //                                                or new sdk.SchemaModalService().show({ schemaName, action,
-//                                                    recordId, defaultValues })  (present in devkit 0.1000.x
-//                                                    typings - check your version)
+//                                                    recordId, defaultValues })  (in devkit typings from 0.832.0;
+//                                                    not in the CHANGELOG - check your version)
 //   VIEW mode on link hover                  ->  NO documented Freedom equivalent (see below)
 //
 // DOES NOT CARRY OVER ONE-TO-ONE

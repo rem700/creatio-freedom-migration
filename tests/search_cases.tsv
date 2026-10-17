@@ -129,3 +129,5 @@ ESNTab feed	Recipes/UI/HowToMigrateFeedAndTimeline
 history tab timeline	Recipes/UI/HowToMigrateFeedAndTimeline
 user list column settings lost	Recipes/Strategy/WhatDoesNotMigrateWithCode
 saveUserProfile	Recipes/Strategy/WhatDoesNotMigrateWithCode
+creatio-devkit/common version compatibility	Recipes/Strategy/VersionCompatibilityReference
+which devkit version does my Creatio have	Recipes/Strategy/VersionCompatibilityReference
