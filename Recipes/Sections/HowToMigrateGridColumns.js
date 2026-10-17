@@ -39,6 +39,7 @@
 //   else, exactly like Classic without addGridDataColumns. Declare the
 //   attribute for every column a handler reads.
 //
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/front-end-development/freedom-ui/client-schema-freedomui/overview
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: DataValueType, ViewModelCollection)
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/ (Terrasoft.EntitySchemaQuery columns)

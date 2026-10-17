@@ -105,3 +105,11 @@ mobile app offline sync	-
 detail shows all rows	Recipes/Lists/HowToMigrateDetailToList
 list shows every record	Recipes/Lists/HowToMigrateDetailToList
 crt.SaveRecordsRequest	Recipes/Lists/HowToMigrateEditableDetail
+worked example complete record page	Recipes/Example/HowToMigrateACompleteRecordPage
+migrate whole page end to end	Recipes/Example/HowToMigrateACompleteRecordPage
+post-migration review checklist	Recipes/Strategy/MigrationChecklists
+test migrated page checklist	Recipes/Strategy/MigrationChecklists
+keep classic or rewrite in freedom	Recipes/Strategy/RewriteOrKeepClassicDecisionTree
+third-party classic package	Recipes/Strategy/RewriteOrKeepClassicDecisionTree
+PDS_ attribute name	Recipes/Strategy/HowToFindGeneratedNamesInFreedomSchema
+_List_DS data source name	Recipes/Strategy/HowToFindGeneratedNamesInFreedomSchema

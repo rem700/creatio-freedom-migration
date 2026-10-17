@@ -16,6 +16,7 @@
 //   all records; crt.ShowDialogRequest shape; leaked mask; missing next; sandbox
 //   messages; Header.Sender casing; process parameters; custom control config.
 //
+// Applies: Creatio 8.1+ (entry 1 covers 8.0 schema shapes); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/front-end-development/freedom-ui/client-schema-freedomui/overview
 // Source: https://www.npmjs.com/package/@creatio-devkit/common

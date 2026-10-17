@@ -41,6 +41,7 @@
 //   keeps reloading data for a page nobody sees, and every revisit adds one
 //   more. An async destroy handler can also be cut off before it finishes.
 //
+// Applies: Creatio 8.1+ (Pause-handler cleanup as in Academy's 8.3 WebSocket example); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.3/platform-customization/freedom-ui/close-the-websocket
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 

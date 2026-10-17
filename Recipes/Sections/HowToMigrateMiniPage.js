@@ -44,6 +44,7 @@
 //   that does not exist puts the field nowhere - it simply does not render.
 //   Expecting hover previews after migration: users get none, and no error.
 //
+// Applies: Creatio 8.1+ (the sdk.SchemaModalService route needs @creatio-devkit/common 0.832.0+, first in published typings); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/ui-and-business-logic-customization/set-up-the-app/set-up-mini-pages
 // Source: https://academy.creatio.com/docs/user/customization_tools/ui_and_business_logic_customization/section_setup/mini_pages
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/platform-customization/freedom-ui/open-a-page-from-a-custom-handler/examples/open-a-typified-freedom-ui-page

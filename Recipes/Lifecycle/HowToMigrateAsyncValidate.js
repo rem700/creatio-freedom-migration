@@ -47,6 +47,7 @@
 //
 // See: Recipes/Lifecycle/HowToMigrateSaveOverride.js
 // See: Recipes/Lifecycle/HowToMigrateValidationConfig.js
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/customize-page-fields/overview
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: Model.create, Model.load, FilterGroup)

@@ -33,6 +33,7 @@
 //
 // See: Recipes/Strategy/HowToReplaceClassicPageWithFreedomPage.js
 // See: Recipes/Strategy/HowToPlanClassicToFreedomMigration.js
+// Applies: Creatio 8.1+ (the MessageChannelService route needs @creatio-devkit/common 0.820.0+); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/appearance-customization/manage-the-form-pages-overview
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/appearance-customization/general-procedure
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: HttpClientService, MessageChannelService, registerViewElement)

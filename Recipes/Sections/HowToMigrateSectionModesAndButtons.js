@@ -49,6 +49,7 @@
 //   renders, with no error.
 //
 // See: Recipes/Lists/HowToMigrateDetailDefaultValues.js
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/platform-customization/freedom-ui/open-a-page-from-a-custom-handler/examples/open-a-typified-freedom-ui-page
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 // Source: https://academy.creatio.com/docs/7-16/developer/interface_elements/record_page/button

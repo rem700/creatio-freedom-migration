@@ -59,6 +59,7 @@
 //   registerViewElement route, forgetting the Module schema in the page's
 //   SCHEMA_DEPS gives the same empty tag.
 //
+// Applies: Creatio 8.1+ (CrtViewElement / registerViewElement in every published @creatio-devkit/common, 0.803.0+); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/remote-modules/freedom-ui-remote-module/overview
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: CrtViewElement, CrtInput, CrtOutput, CrtModule, bootstrapCrtModule, registerViewElement)
 

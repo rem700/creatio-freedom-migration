@@ -57,6 +57,7 @@
 //
 // Filters in depth: See: Recipes/Data/HowToMigrateFilters.js
 //
+// Applies: Creatio 8.1+ (load `options` key needs @creatio-devkit/common 0.813.0+; older builds use loadOptions); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: Model.load, DataSourceLoadOptions, ModelParameterType)
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/ (Terrasoft.EntitySchemaQuery)
 

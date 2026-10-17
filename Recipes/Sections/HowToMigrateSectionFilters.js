@@ -46,6 +46,7 @@
 //   an empty list shows everything.
 //
 // See: Recipes/Data/HowToMigrateFilters.js
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/docs/8.x/dev/development-on-creatio-platform/platform-customization/classic-ui/section/examples/set-up-quick-filter-block
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/ui-and-business-logic-customization/element-setup-examples/components/set-up-quick-filter-components
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: FilterGroup, SysValuesService)

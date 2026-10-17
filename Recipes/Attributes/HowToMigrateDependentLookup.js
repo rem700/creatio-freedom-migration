@@ -51,6 +51,7 @@
 //   ignored: no error, no filter.
 //
 // See: Recipes/Attributes/HowToMigrateBusinessRules.js
+// Applies: Creatio 8.1+ (lookup data loads once since 8.0.10; Object.assign workaround gone in 8.1.1+; filter.toJson() needs @creatio-devkit/common 0.811.1+; "finish-load-model-attributes" reported from 8.1.3); Classic UI 7.x–8.x
 // Source: https://customerfx.com/article/dynamically-filtering-a-lookup-on-a-creatio-freedom-ui-page/ (comments: load-once)
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/ui-and-business-logic-customization/freedom-ui-business-rules
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/customize-page-fields/overview

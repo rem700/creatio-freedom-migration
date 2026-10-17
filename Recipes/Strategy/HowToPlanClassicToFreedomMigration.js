@@ -27,6 +27,7 @@
 //
 // See: Recipes/Strategy/ApiMappingReference.js
 // See: Recipes/Strategy/SchemaStructureMappingReference.js
+// Applies: Creatio 8.1+ (8.0 schema shapes differ); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/app-management/move-a-classic-ui-section-to-freedom-ui
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/front-end-development/freedom-ui/client-schema-freedomui/overview
 

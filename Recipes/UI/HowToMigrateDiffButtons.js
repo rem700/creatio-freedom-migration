@@ -54,6 +54,7 @@
 //   always clickable. A `clicked.request` with no matching handler does nothing:
 //   no error, no console message.
 //
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/page-customization-basics/references/button
 // Source: https://academy.creatio.com/docs/7-18/developer/interface_elements/record_page/button
 // Source: https://community.creatio.com/node/39424

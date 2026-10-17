@@ -45,6 +45,7 @@
 //   tested `success` and nothing else now passes a 500 response as success,
 //   because a resolved promise is not a successful call - test response.ok.
 //
+// Applies: Creatio 8.1+ (HttpClientService in every published @creatio-devkit/common, 0.803.0+); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/send-a-web-service-request/examples/call-a-web-service-front-end
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: HttpClientService, HttpResponse)
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/ (ServiceHelper)

@@ -45,6 +45,7 @@
 //   shown unless you check each insert's `success`. Writing `item` instead of
 //   `item.value` into the lookup column sends an object, not the Guid.
 //
+// Applies: Creatio 8.1+ (queuing the inserts in a transaction needs @creatio-devkit/common 0.831.0+); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/docs/8.x/dev/development-on-creatio-platform/platform-customization/classic-ui/detail/examples/implement-the-bulk-addition-of-records
 // Source: https://community.creatio.com/questions/filter-crtopenlookuppagerequest
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: Model.insert, FilterGroup)

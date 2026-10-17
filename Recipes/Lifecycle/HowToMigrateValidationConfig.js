@@ -45,6 +45,7 @@
 //
 // See: Recipes/Lifecycle/HowToMigrateAsyncValidate.js
 // See: Recipes/Attributes/HowToMigrateEnabledVisibleRequired.js
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/customize-page-fields/overview
 // Source: https://academy.creatio.com/node/541750 (Classic UI: validate a field on a record page)
 

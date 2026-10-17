@@ -27,6 +27,7 @@
 //   businessRules) inside a Freedom UI schema is ignored without an error.
 //
 // See: Recipes/Strategy/ApiMappingReference.js
+// Applies: Creatio 8.1+ (8.0 section names listed for contrast); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/front-end-development/freedom-ui/client-schema-freedomui/overview
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/classic-ui/client-schema/references/rules-and-businessrules
 

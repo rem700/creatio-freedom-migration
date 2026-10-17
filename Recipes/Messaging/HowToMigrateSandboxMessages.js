@@ -58,10 +58,12 @@
 //   A dispatches usr.X with ITS OWN $context: A's chain has no B handler, the
 //   request resolves to undefined, and the caller treats it as "no answer".
 //
+// Applies: Creatio 8.1+ (the MessageChannelService route needs @creatio-devkit/common 0.820.0+); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/docs/8.x/dev/development-on-creatio-platform/8.1/front-end-development/classic-ui/sandbox/overview
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 // Source: https://customerfx.com/article/creating-custom-requests-and-calling-as-functions-on-a-creatio-freedom-ui-page/
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: HandlerChainService, MessageChannelService, MessageChannelType)
+// Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/platform-customization/freedom-ui/open-a-page-from-a-custom-handler/examples/open-a-freedom-ui-page (sdk.HandlerChainService.instance.process from a custom request handler)
 
 // ===== CLASSIC UI (7.x) =====================================================
 
