@@ -39,8 +39,10 @@
 //   missing await assigns a Promise to the attribute: it is truthy, so a
 //   button bound to `visible` shows for EVERYONE.
 //
+// Applies: Creatio 8.1+ (RightsService in every published @creatio-devkit/common, 0.803.0+); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: RightsService.getCanExecuteOperation, getCanExecuteOperations)
 // Source: https://community.creatio.com/questions/check-permission-operation-client-code
+// Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/platform-customization/freedom-ui/hide-functionality-on-a-page/overview (sdk.RightsService.getCanExecuteOperation in crt.HandleViewModelInitRequest)
 
 // ===== CLASSIC UI (7.x) =====================================================
 

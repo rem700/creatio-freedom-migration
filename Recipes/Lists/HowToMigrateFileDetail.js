@@ -44,6 +44,7 @@
 //   from Classic that queries UsrMyEntityFile while the Freedom list stores into
 //   SysFile always finds zero files (or old Classic files only).
 //
+// Applies: Creatio 8.1+ (SysFile storage for new apps sourced from Academy 8.3 docs; check older instances); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.3/back-end-development/api-for-file-management/entity-file-api
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/back-end-development/api-for-file-management/file-api/references/endpoints
 // Source: https://academy.creatio.com/guides/creatio-apps/creatio-basics/freedomUI/attachments-and-notes

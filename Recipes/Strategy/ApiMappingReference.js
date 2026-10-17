@@ -23,6 +23,7 @@
 //   await, `this`) yields code that runs without errors and acts on Promises.
 //
 // See: Recipes/Strategy/SchemaStructureMappingReference.js
+// Applies: Creatio 8.1+ (devkit minimum per service: Strategy/VersionCompatibilityReference); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/

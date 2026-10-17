@@ -42,6 +42,7 @@
 //   Forgetting `await` compares a Promise with "create": always false, also
 //   silently.
 //
+// Applies: Creatio 8.1+ (getPrimaryModelMode is undocumented and in no devkit typings; first version unknown); Classic UI 7.x–8.x
 // Source: https://community.creatio.com/questions/correct-way-unsubscribe-requestcontextevents-crthandleviewmodelinitrequest
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: ModelInPageAction)
 

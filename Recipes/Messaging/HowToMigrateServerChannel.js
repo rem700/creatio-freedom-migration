@@ -53,6 +53,7 @@
 //   check is redundant anyway, but a copied `if (... !== ...) return;` makes the
 //   callback ignore every message.
 //
+// Applies: Creatio 8.1+ (needs @creatio-devkit/common 0.820.0+ for MessageChannelService); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: MessageChannelService, MessageChannelEvent, Subscription)
 // Source: https://customerfx.com/article/receiving-server-side-messages-in-a-creatio-freedom-ui-page/
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.3/platform-customization/freedom-ui/close-the-websocket

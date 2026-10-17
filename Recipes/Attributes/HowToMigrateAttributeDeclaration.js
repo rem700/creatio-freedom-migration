@@ -49,6 +49,7 @@
 //   under its bare name ("UsrName": {}) creates an EMPTY virtual attribute:
 //   it never loads the column and is never saved.
 //
+// Applies: Creatio 8.1+ (8.0 uses viewModelConfig / modelConfig objects instead of the *Diff arrays); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/front-end-development/freedom-ui/client-schema-freedomui/overview
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/customize-page-fields/overview
 

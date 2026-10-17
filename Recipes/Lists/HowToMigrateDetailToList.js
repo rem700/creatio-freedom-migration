@@ -49,6 +49,7 @@
 //   that is not the link to the master, or the dependency is keyed by the grid
 //   name instead of the data source name ("GridDetail_xDS").
 //
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/front-end-development/freedom-ui/client-schema-freedomui/overview
 // Source: https://academy.creatio.com/docs/8.x/dev/development-on-creatio-platform/platform-customization/classic-ui/detail/references/basedetailv2
 

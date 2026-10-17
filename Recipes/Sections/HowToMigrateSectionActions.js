@@ -47,6 +47,7 @@
 //   in Freedom guard explicitly.
 //
 // See: Recipes/Data/HowToMigrateFilters.js
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/docs/8.x/dev/development-on-creatio-platform/platform-customization/classic-ui/section/examples/set-up-handling-for-multiple-records
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/business-processes
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers

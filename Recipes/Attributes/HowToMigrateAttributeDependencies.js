@@ -42,6 +42,7 @@
 //   A handler that does not call `return next?.handle(request)` stops the
 //   chain: other packages' and stock handlers for the same change never run.
 //
+// Applies: Creatio 8.1+ (the load-finished flag relies on "finish-load-model-attributes", reported from 8.1.3, unverified); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/customize-page-fields/overview
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: HandleViewModelAttributeChangeRequest)
 

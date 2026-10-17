@@ -40,6 +40,7 @@
 //   update/delete still mean "every row" (observed).
 //
 // See: Recipes/Data/HowToMigrateInsertUpdateDelete.js
+// Applies: Creatio 8.1+ (needs @creatio-devkit/common 0.831.0+ for TransactionFactoryService); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: TransactionFactoryService, ITransaction, Model.*InTransaction; CHANGELOG 0.831.0)
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/ (Terrasoft.BatchQuery)
 

@@ -35,6 +35,7 @@ is the reference example.
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   what breaks without an error when the code is translated line by line
 //
+// Applies: Creatio 8.1+ (needs @creatio-devkit/common 0.8xx.0+ when relevant)
 // Source: <url>                      (one or more; required)
 
 // ===== CLASSIC UI (7.x) =====================================================
@@ -49,6 +50,9 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/[...]/**SCHEMA_DEPS*/, function/**S
   on its own line to separate paragraphs.
 - Both code sections, with exactly those two marker lines, are required in every topic folder
   except `Strategy` and `Pitfalls`, which are reference text.
+- Every header has an `Applies:` line: the Creatio versions the Freedom UI half is valid for,
+  plus the devkit version when a needed `sdk.*` service appeared in a specific devkit release
+  (see `Recipes/Strategy/VersionCompatibilityReference.js`). Never guess a version mapping.
 - Show the **same task** in both halves, so the reader can compare line by line.
 - Freedom UI code targets **8.1+** (`viewModelConfigDiff`, `modelConfigDiff`). When something
   differs on 8.0 or on a specific 8.x version, say so in the header.

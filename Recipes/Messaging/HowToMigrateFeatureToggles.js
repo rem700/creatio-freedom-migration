@@ -43,8 +43,10 @@
 //   whether the feature is on or off. Assigning that Promise to a `visible`
 //   attribute shows the element to everyone in the same way.
 //
+// Applies: Creatio 8.1+ (FeatureService in every published @creatio-devkit/common, 0.803.0+); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: FeatureService.getFeatureState, getFeaturesState)
 // Source: https://academy.creatio.com/docs/7-18/developer/interface_elements/interface_control_tools/existing_feature
+// Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/platform-customization/freedom-ui/hide-functionality-on-a-page/overview (sdk.FeatureService.getFeatureState)
 
 // ===== CLASSIC UI (7.x) =====================================================
 

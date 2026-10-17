@@ -62,6 +62,7 @@
 //   built in a loop over an empty list matches EVERY row - guard for zero
 //   items before you pass it to load, update or delete.
 //
+// Applies: Creatio 8.1+ (addSchemaColumnBetweenFilterWithParameters needs @creatio-devkit/common 0.808.0+); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: FilterGroup, ComparisonType, LogicalOperatorType)
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/ (Terrasoft.FilterGroup, Terrasoft.ComparisonType)
 

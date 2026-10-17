@@ -11,7 +11,7 @@ recipe into its context.
 | `search_recipes(query, area?, limit?)` | Ranked search. The query can be the Classic UI API you are replacing (`lookupListConfig`, `sandbox.publish`), a task, or a symptom. |
 | `get_recipe(recipe_id)` | Returns the full recipe: the sources it cites, the header (API map, what does not carry over, silent failures), then the Classic UI and Freedom UI code. |
 | `find_api(symbol, limit?)` | Lists the recipes that mention an API name, such as `Terrasoft.BatchQuery`, `crt.SaveRecordRequest` or `sdk.FilterGroup`. |
-| `list_recipes(area?, topic?)` | Lists recipe ids and titles. Topics: `Strategy`, `Lifecycle`, `Attributes`, `Data`, `Lists`, `Sections`, `UI`, `Messaging`, `Pitfalls`. |
+| `list_recipes(area?, topic?)` | Lists recipe ids and titles. Topics: `Strategy`, `Example`, `Lifecycle`, `Attributes`, `Data`, `Lists`, `Sections`, `UI`, `Messaging`, `Pitfalls`. |
 | `kb_overview()` | Shows the topics and how many recipes each has. |
 
 How search works:

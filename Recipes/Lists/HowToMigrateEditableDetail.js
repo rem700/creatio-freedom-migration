@@ -46,9 +46,11 @@
 //   comparison `< 0` is false and every row passes.
 //
 // See: Recipes/Lists/HowToMigrateDetailToList.js
+// Applies: Creatio 8.1+; Classic UI 7.x–8.x
 // Source: https://community.creatio.com/questions/how-access-all-items-detail-list-freedom-ui-page
 // Source: https://community.creatio.com/questions/functionhandler-called-when-creating-new-record-detail
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
+// Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.1/platform-customization/freedom-ui/page-customization-basics/references/list (features.editable: enable, itemsCreation)
 
 // ===== CLASSIC UI (7.x) =====================================================
 

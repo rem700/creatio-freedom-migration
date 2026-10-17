@@ -36,6 +36,7 @@
 //   drops the Classic behaviour for every user who logs in again.
 //
 // See: Recipes/Strategy/HowToRunClassicAndFreedomSideBySide.js
+// Applies: Creatio 8.1+ (UI Management / Form page preferences as documented for 8.1); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/appearance-customization/manage-the-form-pages-overview
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/appearance-customization/general-procedure
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/app-management/move-a-classic-ui-section-to-freedom-ui

@@ -48,6 +48,7 @@
 //   runs, but every this.get() becomes an undefined read and every default you
 //   write is replaced by the loaded record a moment later. No error appears.
 //
+// Applies: Creatio 8.1+ ("finish-load-model-attributes" reported from 8.1.3, unverified; getPrimaryModelMode undocumented, in no devkit typings); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 // Source: https://community.creatio.com/questions/correct-way-unsubscribe-requestcontextevents-crthandleviewmodelinitrequest
 

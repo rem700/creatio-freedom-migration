@@ -39,6 +39,7 @@
 //   any thrown error (a failed service call, a rejected promise) skips the hide:
 //   the page stays frozen until reload, and nothing is logged by the mask itself.
 //
+// Applies: Creatio 8.1+ (MaskService 0.803.0+; the DialogService call in the example needs @creatio-devkit/common 0.814.0+); Classic UI 7.x–8.x
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: MaskService, MaskSettings, SchemaViewMaskRequest)
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/
 
