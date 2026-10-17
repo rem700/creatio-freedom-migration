@@ -20,7 +20,8 @@
 //   "which grid / lookup is loading"
 //                                  ->  crt.LoadDataRequest: request.dataSourceName
 //   IsDebug system setting (unminified separate files)
-//                                  ->  same setting, same effect for client scripts (Academy)
+//                                  ->  same setting (Academy, Classic context; effect on
+//                                      Freedom schemas observed)
 //   ESQ request in the Network tab  ->  data source requests in the Network tab (observed:
 //                                      DataService endpoints); OData only if YOUR code calls it
 //
@@ -60,7 +61,8 @@
 //	Terrasoft.SysSettings.postPersonalSysSettingsValue("IsDebug", true);
 //
 // Reload. Client scripts then load as separate, unminified files instead of
-// the combined build (Academy), so Sources > search (Ctrl+Shift+F) finds your
+// the combined build (Academy, Classic context; effect on Freedom schemas
+// observed), so Sources > search (Ctrl+Shift+F) finds your
 // schema by its name and breakpoints stay where you put them. It slows the
 // application down: switch it off afterwards. A `debugger;` statement in a
 // handler also pauses there while DevTools is open.
@@ -134,7 +136,7 @@
 // source code view) and read
 //   viewModelConfigDiff > attributes   ->  PDS_UsrName_a1b2c3d, Items, <list>_SelectionState
 //   modelConfigDiff > dataSources      ->  PDS, GridDetail_x1y2z3aDS, ...
-//   viewConfigDiff                     ->  "value": "$PDS_UsrName_a1b2c3d" on each field,
+//   viewConfigDiff                     ->  "control": "$PDS_UsrName_a1b2c3d" on each field,
 //                                          "items": "$GridDetail_x1y2z3a" on each list
 // A lookup's list data source is "<lookup attribute>_List_DS" (observed and
 // documented in community articles). When a name still looks wrong, the

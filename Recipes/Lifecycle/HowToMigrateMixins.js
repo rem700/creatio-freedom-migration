@@ -187,7 +187,12 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["UsrDiscountUtils"]/**SCHEMA_DEPS*
 				handler: async (request, next) => {
 					const amount = await request.$context.PDS_UsrAmount_a1b2c3d;
 					const percent = await request.$context.PDS_UsrDiscount_b2c3d4e;
-					request.$context.PDS_UsrTotal_d4e5f6a = discountUtils.calculateDiscountedAmount(amount, percent);
+					const total = discountUtils.calculateDiscountedAmount(amount, percent);
+					// The change handler also fires while the record loads: write only
+					// on a real difference, or the page opens marked as changed.
+					if ((await request.$context.PDS_UsrTotal_d4e5f6a) !== total) {
+						request.$context.PDS_UsrTotal_d4e5f6a = total;
+					}
 					return next?.handle(request);
 				}
 			}
@@ -211,7 +216,11 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["UsrDiscountUtils"]/**SCHEMA_DEPS*
 //			// Same attribute names on every scoped page (see header).
 //			const amount = await request.$context["UsrAmountValue"];
 //			const percent = await request.$context["UsrDiscountValue"];
-//			request.$context["UsrTotalValue"] = calculateDiscountedAmount(amount, percent);
+//			const total = calculateDiscountedAmount(amount, percent);
+//			// Compare before write: also runs during load (see ROUTE B).
+//			if ((await request.$context["UsrTotalValue"]) !== total) {
+//				request.$context["UsrTotalValue"] = total;
+//			}
 //			return this.next?.handle(request);
 //		}
 //	}

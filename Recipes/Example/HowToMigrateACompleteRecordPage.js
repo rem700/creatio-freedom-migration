@@ -644,7 +644,7 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 				// Was init + onEntityInitialized.
 				request: "crt.HandleViewModelInitRequest",
 				handler: async (request, next) => {
-					await next?.handle(request);
+					const result = await next?.handle(request);
 					request.$context.events$.subscribe((evt) => {
 						if (evt?.type === "finish-load-model-attributes") {
 							request.$context.UsrIsModelLoaded = true;
@@ -652,6 +652,7 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 					});
 					// Step 7. Covers a status that never changes on this open.
 					await applyOwnerRequired(request.$context);
+					return result;
 				}
 			},
 			{
@@ -701,12 +702,15 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 						return false;
 					}
 					const result = await next?.handle(request);
-					await request.$context.executeRequest({
-						type: "crt.LoadDataRequest",
-						$context: request.$context,
-						config: { loadType: "reload", useLastLoadParameters: true },
-						dataSourceName: "GridDetail_k7m2p9qDS"
-					});
+					// Reload the detail only if the save went through.
+					if (result) {
+						await request.$context.executeRequest({
+							type: "crt.LoadDataRequest",
+							$context: request.$context,
+							config: { loadType: "reload", useLastLoadParameters: true },
+							dataSourceName: "GridDetail_k7m2p9qDS"
+						});
+					}
 					return result;
 				}
 			},
@@ -744,7 +748,8 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 						return next?.handle(request);
 					}
 					// Was executeProcess + the isAddMode "save first" guard.
-					const result = await request.$context.executeRequest({
+					// showNotification: true reports the start to the user.
+					await request.$context.executeRequest({
 						type: "crt.RunBusinessProcessRequest",
 						$context: request.$context,
 						processName: "UsrApproveMyEntityProcess",
@@ -753,9 +758,6 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 						saveAtProcessStart: true,
 						showNotification: true
 					});
-					if (!(result?.isSuccess || result?.success)) {
-						// The process did not start: tell the user here.
-					}
 					return next?.handle(request);
 				}
 			}

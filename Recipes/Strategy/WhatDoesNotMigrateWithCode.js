@@ -13,7 +13,8 @@
 //                                  ->  Freedom list settings: personal (saved automatically),
 //                                      "Save list settings for all users as default"
 //                                      (CanCreateDefaultGridSettings), "Overwrite current list
-//                                      settings for all users", per-folder list settings
+//                                      settings for all users" (8.2.3+, Academy 8.3 list page),
+//                                      per-folder list settings
 //   Classic default column set for everyone (admin profile)
 //                                  ->  columns in the Freedom page schema (designer), then the
 //                                      "for all users" default above
@@ -40,7 +41,8 @@
 //   - Freedom list settings priority: personal > default for all users >
 //     designer (Academy). A personal setting made during a pilot hides every
 //     later default change for that user until "Reset to default list
-//     settings" or "Overwrite current list settings for all users".
+//     settings" or "Overwrite current list settings for all users" (the
+//     overwrite needs Creatio 8.2.3+ per the Academy 8.3 list page).
 //   - Folder data: Academy's Freedom UI folder pages do not say whether
 //     Classic folders appear in the Freedom folder tree, nor whether filters
 //     of Classic dynamic folders evaluate the same. Check both on a copy with
@@ -63,7 +65,7 @@
 // See: Recipes/Strategy/HowToRunClassicAndFreedomSideBySide.js
 // See: Recipes/Sections/HowToMigrateGridColumns.js
 // See: Recipes/Sections/HowToMigrateSectionFilters.js
-// Applies: Classic UI 7.x; Freedom UI 8.1+ (list settings as described in the 8.3 user guide - check yours; Dashboards migrator 8.3.1+)
+// Applies: Classic UI 7.x; Creatio 8.1+; list-settings overwrite 8.2.3+ (list settings as described in the 8.3 user guide - check yours; Dashboards migrator 8.3.1+)
 // Source: https://academy.creatio.com/guides/creatio-apps/8.3/creatio-basics/freedomUI/manage-a-freedom-ui-list
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/ui-and-business-logic-customization/element-setup-examples/components/set-up-folders
 // Source: https://academy.creatio.com/guides/no-code-customization/8.3/customization-tools/ui-and-business-logic-customization/analytics/migrate-dashboards-classic-to-freedom-ui

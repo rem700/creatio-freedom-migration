@@ -168,7 +168,12 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 						const values = await Promise.all([
 							ctx.PDS_UsrAmount_a1b2c3d, ctx.PDS_UsrTax_b2c3d4e, ctx.PDS_UsrShipping_c3d4e5f
 						]);
-						ctx.PDS_UsrTotal_d4e5f6a = values.reduce((sum, v) => sum + (Number(v) || 0), 0);
+						const total = values.reduce((sum, v) => sum + (Number(v) || 0), 0);
+						// Also fires during load: write only on a real difference,
+						// or the page opens marked as changed.
+						if ((await ctx.PDS_UsrTotal_d4e5f6a) !== total) {
+							ctx.PDS_UsrTotal_d4e5f6a = total;
+						}
 					}
 
 					// 2. Lookup read: only for THIS attribute, only on a real
@@ -191,7 +196,7 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 			{
 				request: "usr.LoadSummaryRequest",
 				handler: async (request, next) => {
-					const id = await request.$context.PDS_Id_a7b8c9d;
+					const id = await request.$context.Id;
 
 					// 3. Independent reads: start both, await together.
 					// SLOW port: const tasks = await ...; const lines = await ...;

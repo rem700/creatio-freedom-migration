@@ -48,8 +48,8 @@ Open DevTools > Console and type `[verify` into the console filter. Keep "Preser
 
 | Step | Do this | Checks that log |
 |---|---|---|
-| 1 | Open an **existing** record of the page. Wait 3 s. | 2, 3, 4, 5, 6, 12, 13, 19, 20, 21, 22, 23, 27, 33, 42, 44 |
-| 2 | Open the lookup dropdown. Then run `UsrMigrationVerify.lookupFilter("json")`, open it again; then `lookupFilter("none")`, open it again. | 5, 42 |
+| 1 | Open an **existing** record of the page. Wait 3 s. Do not type anything yet: the page itself writes nothing on load, so the `#6` lines show only what the platform does. | 2, 3, 6, 12, 13, 19, 20, 21, 22, 23, 27, 33, 42, 44 |
+| 2 | Run `UsrMigrationVerify.changeKey()`. Then run `UsrMigrationVerify.setLookupFilter("group")` and open the lookup dropdown; then `setLookupFilter("json")`, open it again; then `setLookupFilter("none")`, open it again. | 4, 5, 42 |
 | 3 | Type `123` into "verify #26: value-bound" and "verify #26: control-bound", leave each field. | 26 |
 | 4 | Type into "verify #7 ...". Is it editable? Has it a required asterisk? | 7 |
 | 5 | Click the "Verify #43: dialog" button (its presence answers #41). Close with **Escape**. Repeat, close with **X**. Repeat, click **OK**. No button? Run `UsrMigrationVerify.dialog()`. | 41, 43 |
@@ -75,7 +75,9 @@ Open DevTools > Console and type `[verify` into the console filter. Keep "Preser
 - `#2`: `ModifiedOn (undeclared) = undefined` while `UsrVerifyCreatedOn` has a date confirms it.
 - `#12`: "empty group" rows = "without filter" rows (> 0) confirms "empty group = no filter".
   The page only LOADS; it never runs update/delete with an empty filter.
-- `#5`: an empty dropdown after `lookupFilter("group")` = the FilterGroup was applied; a full
+- `#6`: read the `#6` lines from step 1 only (before `changeKey()` / `setLookupFilter()`, which
+  are page writes). `true` at finish-load or at 3 s with nobody typing = confirmed.
+- `#5`: an empty dropdown after `setLookupFilter("group")` = the FilterGroup was applied; a full
   list = ignored, then try `"json"`.
 - `#26`: the validator line appears only for the control-bound input, and a value-bound edit
   produces no "received" line = confirmed.
@@ -94,7 +96,7 @@ the same claim share one number. "-" = not checkable from a page (reason given).
 | 1 | The 8.0 section shape (`viewModelConfig` / `modelConfig`) on 8.1+ is ignored without an error | Attributes/HowToMigrateAttributeDeclaration.js; Strategy/HowToPlanClassicToFreedomMigration.js | - optional, see section 5 | |
 | 2 | A column read in code needs an attribute with `modelConfig.path`, or it is not loaded | Attributes/HowToMigrateAttributeDeclaration.js | #2 | |
 | 3 | Classic keys (`dataValueType`, `type: VIRTUAL_COLUMN`) in a Freedom attribute are ignored, no error | Attributes/HowToMigrateAttributeDeclaration.js | #3 | |
-| 4 | The `"change"` key request carries no value; read the attribute with await | Attributes/HowToMigrateAttributeDependencies.js | #4 | |
+| 4 | The `"change"` key request carries no value; read the attribute with await | Attributes/HowToMigrateAttributeDependencies.js | #4 (step 2) | |
 | 5 | A filter attribute holding an `sdk.FilterGroup` works; else assign `filter.toJson()` | Attributes/HowToMigrateDependentLookup.js | #5 (step 2) | |
 | 6 | `HasUnsavedData` can turn true during load | Attributes/HowToMigrateDependentLookup.js; Lifecycle/HowToMigrateNewRecordDetection.js (community) | #6 | |
 | 7 | `"enabled"` / `"isRequired"` kept in `viewConfigDiff` have no effect | Attributes/HowToMigrateEnabledVisibleRequired.js | #7 (step 4) | |

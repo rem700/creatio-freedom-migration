@@ -61,7 +61,7 @@
 //   schema is ignored: the page shows no approvals and raises no error. A
 //   process that still inserts rows into UsrMyEntityVisa keeps "working", but
 //   nothing on the Freedom page shows those rows and no one gets a Freedom UI
-//   approval notification.
+//   approval notification (community answer; verify).
 //
 // Applies: Classic UI 7.11+ (section wizard approvals); Freedom UI 8.1+ (Approvals / Approvals list components, Approval process element)
 // Source: https://academy.creatio.com/guides/creatio-apps/8.1/creatio-basics/communications/approvals

@@ -21,10 +21,11 @@
 //                                      Freedom UI Designer (request crt.PrintablesRequest;
 //                                      copy the JSON the designer generates)
 //   preparePrintFormsMenuCollection(printForms) - hide items per record
-//                                  ->  no documented equivalent; community answers (2025-2026):
-//                                      "you can't hide individual reports inside the Print report
-//                                      menu". Workaround: one button per report, visibility by
-//                                      business rule; See: Recipes/Attributes/HowToMigrateBusinessRules.js
+//                                  ->  no documented equivalent; community answer (node/41554,
+//                                      Oct 2025): "In Freedom UI you can't hide individual reports
+//                                      inside the Print report menu". Workaround: one button per
+//                                      report, visibility by business rule;
+//                                      See: Recipes/Attributes/HowToMigrateBusinessRules.js
 //   isSectionPrintFormEnabled(reportId) on the section
 //                                  ->  same gap on the list page; same workaround
 //   ServiceHelper.callService("ReportService", "CreateReportsList", ...)
@@ -44,8 +45,8 @@
 //     switching a section to Freedom UI.
 //   - Before 8.1.1 Freedom UI had no printables at all (community, Creatio
 //     support 2023: printables "will be available in the 8.1.1 version");
-//     the documented workaround then was a business process with the
-//     "Process file" element.
+//     the documented workaround then was a business process (e.g. Process
+//     file element).
 //   - crt.PrintablesRequest has no documented parameters. Do not hand-write
 //     them: add the button in the designer and keep what it generates.
 //   - ReportService is an internal service: its method names and payload
@@ -71,7 +72,7 @@
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/print-ready-reports/set-up-ms-word-report---general-procedure
 // Source: https://academy.creatio.com/docs/8.x/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 // Source: https://customerfx.com/article/running-and-downloading-a-printable-via-javascript-in-creatio/
-// Source: https://community.creatio.com/questions/hideshow-print-button-items-based-specific-condition
+// Source: https://community.creatio.com/questions/hideshow-print-button-items-based-specific-condition (Classic UI only: preparePrintFormsMenuCollection)
 // Source: https://community.creatio.com/node/41554
 // Source: https://community.creatio.com/node/38599
 
@@ -168,7 +169,18 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 				"index": 1
 			}
 		]/**SCHEMA_VIEW_CONFIG_DIFF*/,
-		viewModelConfigDiff: /**SCHEMA_VIEW_MODEL_CONFIG_DIFF*/[]/**SCHEMA_VIEW_MODEL_CONFIG_DIFF*/,
+		viewModelConfigDiff: /**SCHEMA_VIEW_MODEL_CONFIG_DIFF*/[
+			{
+				"operation": "merge",
+				"path": ["attributes"],
+				"values": {
+					// Bound to UsrPrintContractButton.visible above.
+					"PDS_UsrIsApproved_a1b2c3d": {
+						"modelConfig": { "path": "PDS.UsrIsApproved" }
+					}
+				}
+			}
+		]/**SCHEMA_VIEW_MODEL_CONFIG_DIFF*/,
 		modelConfigDiff: /**SCHEMA_MODEL_CONFIG_DIFF*/[]/**SCHEMA_MODEL_CONFIG_DIFF*/,
 		handlers: /**SCHEMA_HANDLERS*/[
 			{
@@ -176,7 +188,7 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 				// (community-documented payload; verify on your version).
 				request: "usr.PrintContractRequest",
 				handler: async (request, next) => {
-					const recordId = await request.$context.PDS_Id_b2c3d4e;
+					const recordId = await request.$context.Id;
 					// See: Recipes/UI/HowToMigrateBodyMask.js
 					const mask = new sdk.MaskService();
 					let keys = null;

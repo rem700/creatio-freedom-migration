@@ -173,7 +173,12 @@ define("UsrMigrationVerify_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]
 	}
 
 	// Manual checks, run from the browser console on the open page.
-	V.lookupFilter = (mode) => setLookupFilter(V.ctx, mode || "group");
+	// The page itself writes nothing on load, so #6 is not confounded by its own writes.
+	V.setLookupFilter = (mode) => setLookupFilter(V.ctx, mode || "group");
+	V.changeKey = () => {
+		// #4: trigger the "change" key once per call.
+		V.ctx.UsrVerifyChangeKey = "changed " + since();
+	};
 	V.dialog = () => dialogCheck(V.ctx);
 	V.selection = async () => {
 		// #36: SelectionState shape of a list.
@@ -339,7 +344,7 @@ define("UsrMigrationVerify_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]
 					// #23: getPrimaryModelMode exists at runtime (it is in no devkit typings).
 					log(23, "getPrimaryModelMode() exists on $context although not in the typings",
 						"typeof = " + typeof ctx.getPrimaryModelMode);
-					await next?.handle(request);
+					const result = await next?.handle(request);
 
 					// #22: view model initialised once, RESUMED on return.
 					log(22, "a view model is initialised once and resumed when the user comes back",
@@ -347,12 +352,14 @@ define("UsrMigrationVerify_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]
 					// #20: mode values.
 					log(20, "getPrimaryModelMode() is \"create\" for a new record, \"update\" for an existing one (at init)",
 						fmt(await readMode(ctx)));
-					// #6: HasUnsavedData right after init.
-					log(6, "HasUnsavedData can turn true during load (at init)", fmt(await ctx.HasUnsavedData));
+					// #6: HasUnsavedData right after init, before this page writes anything.
+					// The page makes no writes on load: the change key (#4) and the lookup
+					// filter (#5) are triggered by hand (V.changeKey(), V.setLookupFilter()).
+					log(6, "HasUnsavedData can turn true during load (at init, before any write by this page)",
+						fmt(await ctx.HasUnsavedData));
 
 					// #19 / #21: events$ and finish-load-model-attributes.
 					let finishCount = 0;
-					let changeKeyDone = false;
 					if (ctx.events$ && typeof ctx.events$.subscribe === "function") {
 						const sub = ctx.events$.subscribe(async (evt) => {
 							const type = evt && evt.type;
@@ -372,11 +379,6 @@ define("UsrMigrationVerify_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]
 							if (finishCount === 1) {
 								await checkAfterLoad(ctx, "finish-load #1");
 							}
-							if (!changeKeyDone) {
-								changeKeyDone = true;
-								// #4: trigger the "change" key once.
-								ctx.UsrVerifyChangeKey = "changed " + since();
-							}
 						});
 						V.subs.push(sub);
 					} else {
@@ -388,16 +390,12 @@ define("UsrMigrationVerify_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]
 						if (finishCount === 0) {
 							await checkAfterLoad(ctx, "timer 3 s");
 						}
-						if (!changeKeyDone) {
-							changeKeyDone = true;
-							ctx.UsrVerifyChangeKey = "changed " + since();
-						}
 					}, 3000);
 
-					setLookupFilter(ctx, "group");
 					dataChecks();
-					console.log("[verify] manual checks: UsrMigrationVerify.dialog(), .lookupFilter(\"group\"|\"json\"|\"none\"), " +
-						".selection(), .dirty(), .csrf() - see tools/verify/README.md");
+					console.log("[verify] manual checks: UsrMigrationVerify.changeKey(), .setLookupFilter(\"group\"|\"json\"|\"none\"), " +
+						".dialog(), .selection(), .dirty(), .csrf() - see tools/verify/README.md");
+					return result;
 				}
 			},
 			{
@@ -463,7 +461,7 @@ define("UsrMigrationVerify_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]
 					} else if (name === "UsrVerifyValueBound" || name === "UsrVerifyControlBound") {
 						log(26, "an input bound with \"value\" does not write edits back; \"control\" does",
 							name + " received " + fmt(request.value));
-					} else if (name === "UsrVerifyEnabledKey") {
+					} else if (name === "UsrVerifyEnabledKey" && request.value) {
 						log(7, "\"enabled\": false / \"isRequired\" in viewConfigDiff are ignored",
 							"field accepted input " + fmt(request.value) + " => \"enabled\": false was ignored");
 					}
