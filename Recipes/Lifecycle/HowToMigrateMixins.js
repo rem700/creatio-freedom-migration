@@ -1,12 +1,12 @@
 // --- How to migrate mixins (mixins property, Ext.define mixin classes) to Freedom UI ---
-// Classic UI shares behaviour between page schemas with mixins: an Ext class
+// Classic UI reuses behaviour across page schemas with mixins: an Ext class
 // (Ext.define("Terrasoft.configuration.mixins.UsrX", { alternateClassName:
 // "Terrasoft.UsrX", ... })) listed in the schema's `mixins` property, whose
 // methods then run as if they were the page's own (`this.get`, `this.set`,
 // `this.someMixinMethod()`), and which the page overrides by declaring a
 // method with the same name. Freedom UI has NO mixin mechanism: there is no
 // `mixins` key, no `this`, and no method merging into a view model. Shared
-// logic is split by what it does: pure calculations go to a plain module,
+// code is split by what it does: pure calculations go to a plain module,
 // page behaviour goes to a custom request (usr.*) handled once - on each page
 // or, for real reuse, by a request handler in a remote module - and rules
 // that must hold for every UI and integration go to the server.
@@ -20,21 +20,22 @@
 //   method that reads/writes the page (this.get / this.set)
 //                                  ->  custom request "usr.ApplyDiscountRequest" + handler that
 //                                      reads/writes request.$context (await every read)
-//   one mixin reused by many pages ->  remote module: @CrtRequestHandler({ type, requestType,
+//   one mixin reused by many schemas ->  remote module: @CrtRequestHandler({ type, requestType,
 //                                      scopes: ["<page code>", ...] }) extends BaseRequestHandler,
 //                                      listed in @CrtModule({ requestHandlers })
 //   this.applyDiscount() called from page code
 //                                  ->  await request.$context.executeRequest({
 //                                          type: "usr.ApplyDiscountRequest", $context: request.$context })
 //   overriding a mixin method in the page (same name)
-//                                  ->  a page handler for the same request type; call
+//                                  ->  a guard where the page dispatches the request, or a page
+//                                      handler for the same request type that calls
 //                                      next?.handle(request) to also run the shared one
 //   this.mixins.UsrX.method.call(this, ...)  (calling the original)
 //                                  ->  return next?.handle(request)
 //   mixin init(callback) hooked into the page init
 //                                  ->  handler for crt.HandleViewModelInitRequest (in the page
 //                                      or a scoped remote handler)
-//   logic every UI and integration must obey
+//   rules every UI and integration must obey
 //                                  ->  C# service / entity event listener / business process;
 //                                      See: Recipes/Data/HowToMigrateServiceHelperCalls.js
 //   stock mixins: LookupMultiAddMixin, ConfigurationGridUtilitiesV2
@@ -46,15 +47,15 @@
 //     cannot be moved into a plain module as is: pass values in as arguments,
 //     or turn it into a request handler that reads `request.$context`.
 //   - Attribute names change (Classic "UsrAmount" -> Freedom "PDS_UsrAmount_..."
-//     generated per page). A shared handler used by several pages must not
-//     hard-code one page's generated names: give the pages the same
+//     generated per page). A reused handler on several schemas must not
+//     hard-code one schema's generated names: give the schemas the same
 //     view-model attribute names (declare your own attributes bound to the
 //     data source columns) or pass the names as request parameters.
 //   - Remote-module handlers: CrtRequestHandler exists since
 //     @creatio-devkit/common 0.804.0. Without `scopes` the handler is global
 //     and runs on EVERY Freedom UI page (Academy); always scope it to the page
 //     codes that used the mixin.
-//   - The order between a page-schema handler and a remote-module handler for
+//   - The order of a page-schema handler and a remote-module handler for
 //     the same request is not documented. Do not rely on it; test it on your
 //     version.
 //   - Inherited stock mixins (BasePageV2, BaseSectionV2, detail base schemas)
@@ -83,7 +84,7 @@
 //      tree for mixin declarations and their users, for example:
 //          grep -rn --include=*.js -e "mixins:" -e "Ext.define(\"Terrasoft.configuration.mixins" Pkg/
 //          grep -rln "Terrasoft.UsrDiscountableMixin" Pkg/
-//      The second list is the set of pages that need the replacement, and
+//      The second list is the set of schemas that need the replacement, and
 //      therefore the `scopes` of a remote-module handler.
 //   4. For each mixin method, write down: pure / reads the page / writes the
 //      page / calls the server. That classification picks the route above.
@@ -125,7 +126,7 @@ define("UsrMyEntity1Page", ["UsrDiscountableMixin"], function() {
 			UsrDiscountable: "Terrasoft.UsrDiscountableMixin"
 		},
 		attributes: {
-			"UsrAmount": { dependencies: [{ columns: ["UsrAmount", "UsrDiscount"], methodName: "applyDiscount" }] }
+			"UsrTotal": { dependencies: [{ columns: ["UsrAmount", "UsrDiscount"], methodName: "applyDiscount" }] }
 		},
 		methods: {
 			// Override: same name as the mixin method, original called explicitly.
@@ -166,21 +167,15 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["UsrDiscountUtils"]/**SCHEMA_DEPS*
 				handler: async (request, next) => {
 					if (request.attributeName === "PDS_UsrAmount_a1b2c3d" ||
 							request.attributeName === "PDS_UsrDiscount_b2c3d4e") {
-						await request.$context.executeRequest({
-							type: "usr.ApplyDiscountRequest",
-							$context: request.$context
-						});
-					}
-					return next?.handle(request);
-				}
-			},
-			{
-				// The former page override: runs first, decides whether the
-				// shared logic runs at all.
-				request: "usr.ApplyDiscountRequest",
-				handler: async (request, next) => {
-					if (await request.$context.PDS_UsrIsFixedPrice_c3d4e5f) {
-						return;
+						// The former page override, as a guard BEFORE dispatching:
+						// it does not depend on the order of handlers.
+						const isFixedPrice = await request.$context.PDS_UsrIsFixedPrice_c3d4e5f;
+						if (!isFixedPrice) {
+							await request.$context.executeRequest({
+								type: "usr.ApplyDiscountRequest",
+								$context: request.$context
+							});
+						}
 					}
 					return next?.handle(request);
 				}

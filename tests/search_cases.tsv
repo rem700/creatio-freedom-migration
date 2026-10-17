@@ -113,3 +113,19 @@ keep classic or rewrite in freedom	Recipes/Strategy/RewriteOrKeepClassicDecision
 third-party classic package	Recipes/Strategy/RewriteOrKeepClassicDecisionTree
 PDS_ attribute name	Recipes/Strategy/HowToFindGeneratedNamesInFreedomSchema
 _List_DS data source name	Recipes/Strategy/HowToFindGeneratedNamesInFreedomSchema
+mixins	Recipes/Lifecycle/HowToMigrateMixins
+Ext.define mixin shared methods	Recipes/Lifecycle/HowToMigrateMixins
+debug freedom ui page handler	Recipes/Strategy/HowToDebugMigratedFreedomPage
+filter silently not applied network tab	Recipes/Strategy/HowToDebugMigratedFreedomPage
+await in loop slow	Recipes/Data/HowToAvoidSlowAsyncPatterns
+Promise.all parallel load	Recipes/Data/HowToAvoidSlowAsyncPatterns
+printables	Recipes/UI/HowToMigratePrintablesAndReports
+preparePrintFormsMenuCollection	Recipes/UI/HowToMigratePrintablesAndReports
+dashboard chart widget	Recipes/UI/HowToMigrateDashboardsAndCharts
+IndicatorModule	Recipes/UI/HowToMigrateDashboardsAndCharts
+VisaDetailV2	Recipes/Lists/HowToMigrateApprovals
+approval visa detail	Recipes/Lists/HowToMigrateApprovals
+ESNTab feed	Recipes/UI/HowToMigrateFeedAndTimeline
+history tab timeline	Recipes/UI/HowToMigrateFeedAndTimeline
+user list column settings lost	Recipes/Strategy/WhatDoesNotMigrateWithCode
+saveUserProfile	Recipes/Strategy/WhatDoesNotMigrateWithCode

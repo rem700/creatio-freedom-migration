@@ -41,7 +41,7 @@
 // For "filter B by the value picked in A" with no code at all, Freedom UI's
 // declarative form is `filterAttributes` on the "<attr>_List" attribute.
 //
-// Applies: Creatio 8.1+ (lookup data loads once since 8.0.10; Object.assign workaround gone in 8.1.1+); Classic UI 7.x–8.x
+// Applies: Creatio 8.1+ (lookup data loads once since 8.0.10; Object.assign workaround not needed on 8.1.1+); Classic UI 7.x–8.x
 // Source: https://customerfx.com/article/dynamically-filtering-a-lookup-on-a-creatio-freedom-ui-page/
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: FilterGroup, ComparisonType)
 // Source: https://academy.creatio.com/api/jscoreapi/7.15.0/
