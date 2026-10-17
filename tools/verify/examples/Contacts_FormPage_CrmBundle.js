@@ -319,13 +319,13 @@ define("Contacts_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 					"UsrVerifyValueBound": {
 						"value": "",
 						"validators": {
-							"NoDigits": { "type": "usr.VerifyNoDigits", "params": { "label": "value-bound" } }
+							"NoDigits": { "type": "usr.VerifyNoDigits", "params": { "label": "value-bound", "message": "verify: digits are not allowed" } }
 						}
 					},
 					"UsrVerifyControlBound": {
 						"value": "",
 						"validators": {
-							"NoDigits": { "type": "usr.VerifyNoDigits", "params": { "label": "control-bound" } }
+							"NoDigits": { "type": "usr.VerifyNoDigits", "params": { "label": "control-bound", "message": "verify: digits are not allowed" } }
 						}
 					},
 					// #7
@@ -503,13 +503,16 @@ define("Contacts_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 						log(26, "the validator runs only for the \"control\"-bound input",
 							"usr.VerifyNoDigits called for " + config.label + " with " + fmt(value));
 						if (value && /\d/.test(value)) {
-							return { "usr.VerifyNoDigits": { message: "verify: digits are not allowed" } };
+							return { "usr.VerifyNoDigits": { message: config.message } };
 						}
 						return null;
 					};
 				},
 				"params": [
-					{ "name": "label" }
+					{ "name": "label" },
+					// Declare "message" even if unused: on Creatio 10.1 the platform reads
+					// config.message and an undeclared param throws, so the page never opens.
+					{ "name": "message" }
 				],
 				"async": false
 			}
