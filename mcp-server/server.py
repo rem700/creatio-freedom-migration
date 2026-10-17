@@ -129,7 +129,7 @@ def find_api(symbol: str, limit: int = 10) -> str:
 def list_recipes(area: str = "", topic: str = "") -> str:
     """
     List recipe ids and titles, optionally for one topic folder
-    (Strategy, Lifecycle, Attributes, Data, Lists, Sections, UI, Messaging, Pitfalls).
+    (Strategy, Example, Lifecycle, Attributes, Data, Lists, Sections, UI, Messaging, Pitfalls).
     `area` is accepted for compatibility and ignored.
     """
     items = sorted(
