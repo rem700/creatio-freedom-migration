@@ -88,60 +88,69 @@ Remove the code from the page and delete the test package when you are done.
 
 ## 4. Claims and checks
 
+**Results.** Run on Creatio 10.1.796.0 (CRM bundle trial), stock `Contacts_FormPage` replaced,
+2026-10-24 (first run 2026-10-17). Every "Result" below holds for that one version only. The
+browser extension's console tool can miss or deduplicate lines, so the results were collected
+with a `console.log` hook that copied every `[verify` line into a window array.
+Two findings broke the page before any check ran, and the page was fixed for them: a custom
+validator without `{ "name": "message" }` in its `params` ("Property message is not defined in
+validator params config", the page never opens), and a `crt.Input` bound with `"value"` and no
+`"control"` (TypeError in `crtOnViewModelInit`, the page stays behind the loading mask).
+
 Numbers follow the order of `grep -n observed` over the 50 recipes; several recipes stating
 the same claim share one number. "-" = not checkable from a page (reason given).
 
 | # | Claim (observed) | Recipe file(s) under Recipes/ | Check | Result |
 |---|---|---|---|---|
 | 1 | The 8.0 section shape (`viewModelConfig` / `modelConfig`) on 8.1+ is ignored without an error | Attributes/HowToMigrateAttributeDeclaration.js; Strategy/HowToPlanClassicToFreedomMigration.js | - optional, see section 5 | |
-| 2 | A column read in code needs an attribute with `modelConfig.path`, or it is not loaded | Attributes/HowToMigrateAttributeDeclaration.js | #2 | |
-| 3 | Classic keys (`dataValueType`, `type: VIRTUAL_COLUMN`) in a Freedom attribute are ignored, no error | Attributes/HowToMigrateAttributeDeclaration.js | #3 | |
-| 4 | The `"change"` key request carries no value; read the attribute with await | Attributes/HowToMigrateAttributeDependencies.js | #4 (step 2) | |
-| 5 | A filter attribute holding an `sdk.FilterGroup` works; else assign `filter.toJson()` | Attributes/HowToMigrateDependentLookup.js | #5 (step 2) | |
-| 6 | `HasUnsavedData` can turn true during load | Attributes/HowToMigrateDependentLookup.js; Lifecycle/HowToMigrateNewRecordDetection.js (community) | #6 | |
-| 7 | `"enabled"` / `"isRequired"` kept in `viewConfigDiff` have no effect | Attributes/HowToMigrateEnabledVisibleRequired.js | #7 (step 4) | |
-| 8 | Assigning a data-source attribute marks the page dirty (`HasUnsavedData`) | Attributes/HowToMigrateFieldValueReadWrite.js | #8 (step 12) | |
+| 2 | A column read in code needs an attribute with `modelConfig.path`, or it is not loaded | Attributes/HowToMigrateAttributeDeclaration.js | #2 | Confirmed on 10.1.796: undeclared ModifiedOn = undefined, declared CreatedOn has a date (null at the first finish-load) |
+| 3 | Classic keys (`dataValueType`, `type: VIRTUAL_COLUMN`) in a Freedom attribute are ignored, no error | Attributes/HowToMigrateAttributeDeclaration.js | #3 | Confirmed on 10.1.796: attribute reads "x", no error |
+| 4 | The `"change"` key request carries no value; read the attribute with await | Attributes/HowToMigrateAttributeDependencies.js | #4 (step 2) | Confirmed on 10.1.796: request keys type, $context, scopes; request.value undefined; await gives the value |
+| 5 | A filter attribute holding an `sdk.FilterGroup` works; else assign `filter.toJson()` | Attributes/HowToMigrateDependentLookup.js | #5 (step 2) | Confirmed on 10.1.796: both an sdk.FilterGroup instance and toJson() filter the list; null = full list |
+| 6 | `HasUnsavedData` can turn true during load | Attributes/HowToMigrateDependentLookup.js; Lifecycle/HowToMigrateNewRecordDetection.js (community) | #6 | Differs on 10.1.796: true 3 ms after init for a NEW record; false during load of an existing record; virtual and filter attribute writes do not set it |
+| 7 | `"enabled"` / `"isRequired"` kept in `viewConfigDiff` have no effect | Attributes/HowToMigrateEnabledVisibleRequired.js | #7 (step 4) | Confirmed on 10.1.796: "enabled": false ignored (field editable); isRequired shows no asterisk |
+| 8 | Assigning a data-source attribute marks the page dirty (`HasUnsavedData`) | Attributes/HowToMigrateFieldValueReadWrite.js | #8 (step 12) | Confirmed on 10.1.796: assigning JobTitle sets it; restoring the original value does NOT reset it |
 | 9 | `#ResourceString(X)#` is resolved once, not a runtime binding | Attributes/HowToMigrateLocalizableStrings.js | - needs schema resources, visual | |
 | 10 | Wrong resource form or a Classic-only key renders empty / raw key | Attributes/HowToMigrateLocalizableStrings.js | - needs schema resources, visual | |
 | 11 | A Classic BatchQuery is not a transaction: partial failure leaves rows written | Data/HowToMigrateBatchQuery.js | - Classic UI, not a Freedom page | |
-| 12 | An empty FilterGroup means "every row" (update/delete) | Data/HowToMigrateBatchQuery.js; Data/HowToMigrateInsertUpdateDelete.js; Pitfalls/MigrationPitfalls.js | #12 (load as a safe proxy; no writes) | |
-| 13 | A plain `"UsrType.Name"` attribute comes back under the dotted key, not the alias | Data/HowToMigrateEsqQueries.js | #13 | |
+| 12 | An empty FilterGroup means "every row" (update/delete) | Data/HowToMigrateBatchQuery.js; Data/HowToMigrateInsertUpdateDelete.js; Pitfalls/MigrationPitfalls.js | #12 (load as a safe proxy; no writes) | Confirmed on 10.1.796 (load only): empty group 5 rows = no filter 5 rows; writes not tested |
+| 13 | A plain `"UsrType.Name"` attribute comes back under the dotted key, not the alias | Data/HowToMigrateEsqQueries.js | #13 | Confirmed on 10.1.796: key "Owner.Name"; {name, path} gives the alias (an extra "Photo" key also came back) |
 | 14 | Sending an `Id` in the insert dto sets the new record's id | Data/HowToMigrateInsertUpdateDelete.js | - writes data; test on a sandbox entity | |
-| 15 | HttpClientService adds the CSRF header (also for a Blob upload) | Data/HowToMigrateServiceHelperCalls.js; Lists/HowToMigrateFileDetail.js | #15 (step 13, Network tab) | |
+| 15 | HttpClientService adds the CSRF header (also for a Blob upload) | Data/HowToMigrateServiceHelperCalls.js; Lists/HowToMigrateFileDetail.js | #15 (step 13, Network tab) | Confirmed on 10.1.796 in the sense that a CSRF header is added: at fetch level it is named crt_csrf (BPMCSRF cookie exists); a 404 rejects the promise |
 | 16 | A system setting the user may not read comes back empty, not as an error | Data/HowToMigrateSysSettings.js | - needs a user without read rights | |
-| 17 | A failed field validator makes `await next.handle()` in the save handler resolve falsy | Lifecycle/HowToMigrateAsyncValidate.js | #17 (step 8) | |
-| 18 | `crt.HandleViewModelDestroyRequest` does not fire on ordinary navigation; Pause does | Lifecycle/HowToMigrateDestroyAndCleanup.js; Messaging/HowToMigrateServerChannel.js; Pitfalls/MigrationPitfalls.js | #18 (steps 6-7) | |
-| 19 | `events$` emits `"finish-load-model-attributes"` (reported from 8.1.3) | Lifecycle/HowToMigrateInitAndOnEntityInitialized.js; Strategy/ApiMappingReference.js; Pitfalls/MigrationPitfalls.js | #19 | |
-| 20 | `getPrimaryModelMode()` returns `"create"` (new) / `"update"` (existing) | Lifecycle/HowToMigrateInitAndOnEntityInitialized.js; Lifecycle/HowToMigrateNewRecordDetection.js; Lists/HowToMigrateDetailPageMessaging.js | #20 (steps 1, 8, 9) | |
-| 21 | The finish-load payload holds per-attribute true/false flags, only attributes on the page | Lifecycle/HowToMigrateInitAndOnEntityInitialized.js | #21 | |
-| 22 | A view model is initialised once and resumed on return | Lifecycle/HowToMigrateInitAndOnEntityInitialized.js | #22 (step 6) | |
-| 23 | `getPrimaryModelMode()` exists at runtime although it is in no devkit typings | Lifecycle/HowToMigrateInitAndOnEntityInitialized.js; Lifecycle/HowToMigrateNewRecordDetection.js | #23 | |
-| 24 | After the first save of a new record the mode becomes `"update"` | Lifecycle/HowToMigrateNewRecordDetection.js | #24 (step 8) | |
+| 17 | A failed field validator makes `await next.handle()` in the save handler resolve falsy | Lifecycle/HowToMigrateAsyncValidate.js | #17 (step 8) | Not tested as designed: a validator failing on a VIRTUAL attribute does not block save (next.handle resolved true); unverified for data-source fields |
+| 18 | `crt.HandleViewModelDestroyRequest` does not fire on ordinary navigation; Pause does | Lifecycle/HowToMigrateDestroyAndCleanup.js; Messaging/HowToMigrateServerChannel.js; Pitfalls/MigrationPitfalls.js | #18 (steps 6-7) | Confirmed on 10.1.796: section navigation = Pause only, Back = Resume (same view model, state kept); close button = Pause then Destroy; no unsaved-changes prompt via the section menu |
+| 19 | `events$` emits `"finish-load-model-attributes"` (reported from 8.1.3) | Lifecycle/HowToMigrateInitAndOnEntityInitialized.js; Strategy/ApiMappingReference.js; Pitfalls/MigrationPitfalls.js | #19 | Confirmed on 10.1.796, with a difference: fires several times on load ({"Id"} only, then {}, then ~35 keys) and again for lookup and list loads (9 within 3 s) |
+| 20 | `getPrimaryModelMode()` returns `"create"` (new) / `"update"` (existing) | Lifecycle/HowToMigrateInitAndOnEntityInitialized.js; Lifecycle/HowToMigrateNewRecordDetection.js; Lists/HowToMigrateDetailPageMessaging.js | #20 (steps 1, 8, 9) | Differs on 10.1.796: "init" at init and early finish-loads; "update" / "create" only once the record data is loaded |
+| 21 | The finish-load payload holds per-attribute true/false flags, only attributes on the page | Lifecycle/HowToMigrateInitAndOnEntityInitialized.js | #21 | Confirmed on 10.1.796 (flags, not values; all true); payload also carries lookup/list keys ("Owner_List.value", "AddressList.AddressListDS_AddressType"); "only on-page attributes" not checked |
+| 22 | A view model is initialised once and resumed on return | Lifecycle/HowToMigrateInitAndOnEntityInitialized.js | #22 (step 6) | Confirmed on 10.1.796: init once, resumed on return; Resume also follows Init on the first open |
+| 23 | `getPrimaryModelMode()` exists at runtime although it is in no devkit typings | Lifecycle/HowToMigrateInitAndOnEntityInitialized.js; Lifecycle/HowToMigrateNewRecordDetection.js | #23 | Confirmed on 10.1.796: typeof getPrimaryModelMode = function |
+| 24 | After the first save of a new record the mode becomes `"update"` | Lifecycle/HowToMigrateNewRecordDetection.js | #24 (step 8) | Confirmed on 10.1.796: "create" before, "update" after the first save |
 | 25 | A global stylesheet on internal Freedom class names works today, breaks on update | Lifecycle/HowToMigrateOnRenderAndDomAccess.js | - needs two platform versions | |
-| 26 | An input bound with `"value"` is not validated and does not write edits back; `"control"` is | Lifecycle/HowToMigrateValidationConfig.js; Pitfalls/MigrationPitfalls.js | #26 (step 3) | |
-| 27 | `"$Id"` in the generated add button resolves to the page record id | Lists/HowToMigrateDetailDefaultValues.js | #27 partial (logs `$context.Id`; inspect the generated button) | |
+| 26 | An input bound with `"value"` is not validated and does not write edits back; `"control"` is | Lifecycle/HowToMigrateValidationConfig.js; Pitfalls/MigrationPitfalls.js | #26 (step 3) | Differs on 10.1.796: a crt.Input with "value" and no "control" breaks the whole page (TypeError in crtOnViewModelInit); control-bound inputs are validated on every keystroke |
+| 27 | `"$Id"` in the generated add button resolves to the page record id | Lists/HowToMigrateDetailDefaultValues.js | #27 partial (logs `$context.Id`; inspect the generated button) | Partial on 10.1.796: $context.Id equals the record id; the generated button not inspected |
 | 28 | A list is not always reloaded after a record page opened from it closes | Lists/HowToMigrateDetailPageMessaging.js | via #42 (step 10) | |
 | 29 | `dependencies` shape as the designer generates it | Lists/HowToMigrateDetailToList.js | - read the generated schema | |
 | 30 | A list's ExpansionPanel tools stay visible when collapsed | Lists/HowToMigrateDetailToolbarButtons.js | - visual | |
 | 31 | `processParameters` on crt.RunBusinessProcessRequest works although undocumented | Lists/HowToMigrateDetailToolbarButtons.js; Messaging/HowToMigrateProcessLaunch.js; Pitfalls/MigrationPitfalls.js | - needs a test process | |
 | 32 | Objects that came from Classic keep their `<Entity>File` table | Lists/HowToMigrateFileDetail.js | - check the object / list data source | |
-| 33 | An unknown feature code reads as disabled | Messaging/HowToMigrateFeatureToggles.js | #33 | |
+| 33 | An unknown feature code reads as disabled | Messaging/HowToMigrateFeatureToggles.js | #33 | Confirmed on 10.1.796: unknown feature -> false |
 | 34 | `executeProcessByName` waits until the end or a user task | Messaging/HowToMigrateProcessLaunch.js | - needs a test process | |
 | 35 | A wrong (case-mismatched) process parameter code is ignored without an error | Messaging/HowToMigrateProcessLaunch.js; Pitfalls/MigrationPitfalls.js | - needs a test process | |
-| 36 | SelectionState shape `{ type: "specific", selected }` / `{ type: "all", unselected }` | Sections/HowToMigrateSectionActions.js; Strategy/ApiMappingReference.js | #36 (step 11) | |
+| 36 | SelectionState shape `{ type: "specific", selected }` / `{ type: "all", unselected }` | Sections/HowToMigrateSectionActions.js; Strategy/ApiMappingReference.js | #36 (step 11) | Partial on 10.1.796: null with no selection; the "specific" / "all" shapes not checked |
 | 37 | A merge on `filterAttributes` replaces the whole array | Sections/HowToMigrateSectionFilters.js | - list page; compare the merged schema | |
 | 38 | Custom code, business rules, lookups and localisation do not come along when a section is moved | Strategy/HowToReplaceClassicPageWithFreedomPage.js | - section move procedure | |
 | 39 | A Base7xViewElement custom element can load a Classic module (community pattern) | Strategy/HowToRunClassicAndFreedomSideBySide.js | - needs that element | |
 | 40 | A plain Module schema can be a dependency of both a Classic and a Freedom page | Strategy/HowToRunClassicAndFreedomSideBySide.js | - needs two pages | |
-| 41 | `"ActionButtonsContainer"` exists in the stock form page | UI/HowToMigrateDiffButtons.js | #41 (step 5: button visible?) | |
+| 41 | `"ActionButtonsContainer"` exists in the stock form page | UI/HowToMigrateDiffButtons.js | #41 (step 5: button visible?) | Confirmed on 10.1.796: ActionButtonsContainer exists (the test button rendered there) |
 
 Extra checks (not marked "observed" in the recipes, but needed to verify them):
 
 | # | Claim | Recipe file(s) under Recipes/ | Check | Result |
 |---|---|---|---|---|
-| 42 | A lookup's list data source is `<lookup attr>_List_DS`; list and page data source names | Attributes/HowToMigrateLookupFilter.js | #42 | |
-| 43 | What crt.ShowDialogRequest / DialogService resolve to on Escape / X (undocumented) | UI/HowToMigrateDialogs.js | #43 (step 5) | |
-| 44 | Platform version and which devkit services exist at runtime | Strategy/VersionCompatibilityReference.js | #44 | |
+| 42 | A lookup's list data source is `<lookup attr>_List_DS`; list and page data source names | Attributes/HowToMigrateLookupFilter.js | #42 | Confirmed on 10.1.796: `Owner_List_DS` (= `<attr>_List_DS`), only when the dropdown opens (loadType "reload"); at load only PageParameters and PDS; AddressListDS / CareerListDS ~3 s later |
+| 43 | What crt.ShowDialogRequest / DialogService resolve to on Escape / X (undocumented) | UI/HowToMigrateDialogs.js | #43 (step 5) | On 10.1.796: Escape -> undefined, OK -> "UsrVerifyOk" (string), same for crt.ShowDialogRequest and DialogService.open; X not recorded |
+| 44 | Platform version and which devkit services exist at runtime | Strategy/VersionCompatibilityReference.js | #44 | 10.1.796.0; DialogService, MessageChannelService, ProcessEngineService, TransactionFactoryService, SchemaModalService, FeatureService, RightsService present |
 
 ## 5. Optional: claim #1 (8.0 section shape)
 

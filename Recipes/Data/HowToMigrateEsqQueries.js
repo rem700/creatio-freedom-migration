@@ -35,7 +35,7 @@
 //     values with `await request.$context.<Attribute>` before the query.
 //   - The alias moves INTO the attribute: { name, path }. A plain string
 //     "UsrType.Name" comes back under that dotted key, not under your alias
-//     (observed).
+//     (verified on Creatio 10.1.796, tools/verify).
 //   - Paging and sorting move from properties of the query to load `options`
 //     (pagingConfig { rowsOffset, rowCount }, sortingConfig { columns }).
 //     The old `loadOptions` key is deprecated since devkit 0.813.0.

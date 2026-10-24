@@ -15,6 +15,9 @@
 //   (EQUAL -> Equal); void add*() filters; empty filter or empty selection =
 //   all records; crt.ShowDialogRequest shape; leaked mask; missing next; sandbox
 //   messages; Header.Sender casing; process parameters; custom control config.
+//   Two ports are NOT silent on 10.1.796 and stop the page from opening: a
+//   validator type without "message" in its params, and a crt.Input without
+//   "control" (entries 31 and 32).
 //
 // Applies: Creatio 8.1+ (entry 1 covers 8.0 schema shapes); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
@@ -48,9 +51,10 @@
 //    See: Recipes/Lists/HowToMigrateDetailToList.js
 //
 // 4. "value" INSTEAD OF "control" ON AN INPUT
-//    An input bound with "value": "$Attr" renders the value but is observed
-//    not to write the user's edits back, nor to be validated. Inputs bind with
-//    "control".
+//    On 10.1.796 a crt.Input bound with "value": "$Attr" and no "control" does
+//    not render at all: it breaks the whole page (entry 32). Inputs bind with
+//    "control"; a control-bound input runs the attribute's validators on every
+//    keystroke (verified on Creatio 10.1.796, tools/verify).
 //    See: Recipes/Lifecycle/HowToMigrateValidationConfig.js
 //
 // 5. "enabled" PORTED AS-IS
@@ -115,20 +119,29 @@
 // 13. INIT USED AS onEntityInitialized
 //    crt.HandleViewModelInitRequest runs before the record's data is loaded:
 //    reads are undefined and values set there can be overwritten by the load.
+//    getPrimaryModelMode() still returns "init" there. finish-load-model-
+//    attributes fires several times, the first time with only {"Id": true}:
+//    code that reacts to the FIRST one sees an empty record. Check the
+//    payload for the attributes you need (verified on Creatio 10.1.796,
+//    tools/verify).
 //    See: Recipes/Lifecycle/HowToMigrateInitAndOnEntityInitialized.js
 //
 // 14. CLEANUP IN DESTROY
-//    crt.HandleViewModelDestroyRequest is observed not to fire when the user
-//    navigates away (the page is paused); Academy puts cleanup in Pause. Listeners, timers and subscriptions
+//    crt.HandleViewModelDestroyRequest does not fire when the user navigates
+//    to another section: only Pause does; the close button runs Pause, then
+//    Destroy (verified on Creatio 10.1.796, tools/verify). Academy puts
+//    cleanup in Pause. Listeners, timers and subscriptions
 //    attached in init and released in destroy pile up: each event is handled N
 //    times. Attach on Resume, release on Pause.
 //    See: Recipes/Lifecycle/HowToMigrateDestroyAndCleanup.js
 //    See: Recipes/Messaging/HowToMigrateServerChannel.js
 //
 // 15. "NO Id" AS THE NEW-RECORD TEST
-//    A new record already holds a generated Id in both generations, so
+//    A new record already holds a generated Id in both generations (at init
+//    on 10.1.796 - verified, tools/verify), so
 //    `if (!Id)` never fires. Use getPrimaryModelMode() === "create", and save
 //    with crt.SaveRecordRequest (preventCardClose) before acting on the record.
+//    Read the mode after load: it is "init" during load.
 //    See: Recipes/Lifecycle/HowToMigrateNewRecordDetection.js
 //
 // 16. DEPENDENCY HANDLERS THAT FIRE DURING LOAD
@@ -159,7 +172,8 @@
 // 20. EMPTY FILTER GROUP = EVERY ROW
 //    As in Classic, an empty group means "no filter". An Or group built over an
 //    empty id list matches the whole table; for update/delete that is a bulk
-//    write (observed).
+//    write. An empty group returned the same rows as no filter on a load
+//    (verified on Creatio 10.1.796, tools/verify; writes not tested).
 //    See: Recipes/Data/HowToMigrateInsertUpdateDelete.js
 //
 // 21. EMPTY SELECTION = ALL RECORDS
@@ -231,6 +245,23 @@
 //    match the registration renders an empty tag; a property not declared as
 //    @CrtInput / in registerViewElement `inputs` is never set.
 //    See: Recipes/UI/HowToMigrateCustomControl.js
+//
+// ===== PAGE DOES NOT OPEN (observed on 10.1.796) ============================
+//
+// 31. VALIDATOR WITHOUT A "message" PARAM
+//    The platform reads config.message for a custom validator. When the
+//    validator type's "params" does not declare { "name": "message" }, it
+//    throws "Property message is not defined in validator params config" and
+//    the page never opens (observed on 10.1.796, tools/verify). Always
+//    declare "message" in params.
+//    See: Recipes/Lifecycle/HowToMigrateValidationConfig.js
+//
+// 32. crt.Input WITHOUT "control"
+//    Platform code in crtOnViewModelInit runs control.replace("$", "") for
+//    every crt.Input. One bound with "value" and no "control" throws a
+//    TypeError and the page stays behind the loading mask (observed on
+//    10.1.796, tools/verify). Every crt.Input needs "control".
+//    See: Recipes/Lifecycle/HowToMigrateValidationConfig.js
 
 define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_DEPS*/, function/**SCHEMA_ARGS*/(sdk)/**SCHEMA_ARGS*/ {
 	return {
@@ -265,9 +296,12 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 				request: "crt.HandleViewModelInitRequest",
 				handler: async (request, next) => {
 					await next?.handle(request);
-					// 16: one-shot "loaded" flag (event name observed).
+					// 13 + 16: one-shot "loaded" flag. The event fires several
+					// times (first payload {"Id": true} only): wait for the
+					// payload that carries the attribute the handler reads.
 					request.$context.events$.subscribe(async (evt) => {
 						if (evt?.type === "finish-load-model-attributes" &&
+							evt?.payload?.PDS_UsrStatus_b2c3d4e &&
 							!(await request.$context.UsrIsRecordLoaded)) {
 							request.$context.UsrIsRecordLoaded = true;
 						}

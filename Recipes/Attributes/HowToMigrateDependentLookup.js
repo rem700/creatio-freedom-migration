@@ -32,12 +32,16 @@
 //     after 8.1.x (May 2024, CustomerFX article comments). 8.1.1 removed the
 //     Object.assign / newFilter.items workaround, so filterAttributes with
 //     loadOnChange is the route; test on your version.
-//   - Assigning an sdk.FilterGroup to the filter attribute is the common
-//     practice; if your version ignores it, assign filter.toJson() (observed).
+//   - Both an sdk.FilterGroup instance and filter.toJson() in the filter
+//     attribute filter the list (verified on Creatio 10.1.796, tools/verify).
+//     Writing the filter attribute does not set HasUnsavedData (same check).
 //   - Clearing the child on a load-time change wipes the stored City of a
 //     saved record. Clear only when the user changed the parent: below, a
-//     "model loaded" flag set on finish-load-model-attributes. HasUnsavedData
-//     is a common guard but can turn true during load (observed).
+//     "model loaded" flag set on finish-load-model-attributes. That event
+//     fires several times during load (first with only {"Id": true}, then
+//     for lookup and list loads), so set the flag only when the payload holds
+//     the parent attribute. HasUnsavedData is a common guard but is true from
+//     the start for a NEW record (verified on Creatio 10.1.796, tools/verify).
 //     See: Recipes/Attributes/HowToMigrateAttributeDependencies.js
 //   - A filter that needs a query or several conditions is easier in a
 //     crt.LoadDataRequest handler.
@@ -155,7 +159,10 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 				handler: async (request, next) => {
 					await next?.handle(request);
 					request.$context.events$.subscribe((evt) => {
-						if (evt?.type === "finish-load-model-attributes") {
+						// The event fires several times; the first payload is only
+						// {"Id": true}. Wait for the one that carries the parent.
+						if (evt?.type === "finish-load-model-attributes" &&
+							evt?.payload?.PDS_UsrCountry_b2c3d4e) {
 							request.$context.UsrIsModelLoaded = true;
 						}
 					});

@@ -27,6 +27,12 @@
 //     values" and "an exception lookup" as the levers, without setting codes.
 //     The 8.1+ UI is UI Management; check what your installation shows before
 //     scripting any setting code.
+//   - Replacing a stock FREEDOM page (observed on 10.1.796, tools/verify):
+//     opening it in the Freedom UI designer and saving creates the replacing
+//     schema in an auto-created app package (e.g. UsrCrt...App_xxxx), not in
+//     Custom, and the designer writes its own diffs there. The Configuration
+//     "Module" dialog's parent list does not offer Freedom pages. Check which
+//     package holds the replacement before you add code or move it.
 //
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   Building the Freedom UI page but not switching the form page preference
@@ -36,7 +42,7 @@
 //   drops the Classic behaviour for every user who logs in again.
 //
 // See: Recipes/Strategy/HowToRunClassicAndFreedomSideBySide.js
-// Applies: Creatio 8.1+ (UI Management / Form page preferences as documented for 8.1); Classic UI 7.x–8.x
+// Applies: Creatio 8.1+ (UI Management / Form page preferences as documented for 8.1; designer package behaviour observed on 10.1.796); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/appearance-customization/manage-the-form-pages-overview
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/appearance-customization/general-procedure
 // Source: https://academy.creatio.com/guides/no-code-customization/8.1/customization-tools/app-management/move-a-classic-ui-section-to-freedom-ui

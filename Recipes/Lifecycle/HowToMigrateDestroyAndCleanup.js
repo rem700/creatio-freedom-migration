@@ -21,13 +21,20 @@
 //
 // DOES NOT CARRY OVER ONE-TO-ONE
 //   - Pause/resume run on EVERY visit; Classic init/destroy ran once per page
-//     instance. Resume also fires on the first open, so it replaces init for
-//     the attach step.
+//     instance. Resume also fires on the first open, right after Init, so it
+//     replaces init for the attach step (verified on Creatio 10.1.796,
+//     tools/verify).
 //   - Academy's WebSocket example releases resources in the PAUSE handler,
 //     "called every time you open a different page", because Freedom UI keeps
-//     the view model and restores its last state on return. Cleanup placed
-//     only in crt.HandleViewModelDestroyRequest did not run on ordinary
-//     navigation in community reports (observed); do not rely on it.
+//     the view model and restores its last state on return. Navigating to
+//     another section runs Pause only, no Destroy; Back runs Resume on the
+//     same view model with its state kept (dirty flag, typed values); the
+//     page's close button runs Pause, then Destroy (verified on Creatio
+//     10.1.796, tools/verify). Cleanup placed only in
+//     crt.HandleViewModelDestroyRequest does not run on ordinary navigation.
+//   - Leaving a page with unsaved changes through the section menu shows NO
+//     unsaved-changes prompt (observed on 10.1.796); the edits wait in the
+//     paused view model.
 //   - Pause is not called when the user leaves before the view model is
 //     attached (Academy); guard resume against a second timer anyway.
 //   - Handles kept on `this` or in a closure variable are shared by every
@@ -41,7 +48,7 @@
 //   keeps reloading data for a page nobody sees, and every revisit adds one
 //   more. An async destroy handler can also be cut off before it finishes.
 //
-// Applies: Creatio 8.1+ (Pause-handler cleanup as in Academy's 8.3 WebSocket example); Classic UI 7.x–8.x
+// Applies: Creatio 8.1+ (Pause-handler cleanup as in Academy's 8.3 WebSocket example; Pause/Resume/Destroy sequence observed on 10.1.796); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/8.3/platform-customization/freedom-ui/close-the-websocket
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 

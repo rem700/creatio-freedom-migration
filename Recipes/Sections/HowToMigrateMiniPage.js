@@ -16,7 +16,7 @@
 //   parentName "MiniPage", isMiniPageModelItem, layoutName
 //                                            ->  ordinary viewConfigDiff inserts into the template's
 //                                                containers (no mini-page-specific flags)
-//   "visible": { "bindTo": "isAddMode" }     ->  attribute set in crt.HandleViewModelInitRequest from
+//   "visible": { "bindTo": "isAddMode" }     ->  attribute set on finish-load-model-attributes from
 //                                                getPrimaryModelMode() === "create", bound as "$UsrIsNew"
 //   open the mini page from code             ->  crt.OpenPageRequest { schemaName: "UsrMyEntity_MiniPage",
 //                                                    modelInitConfigs: [{ action: "add" | "edit", recordId,
@@ -35,6 +35,10 @@
 //   - Classic mini pages had their own base schema and layout rules; Freedom
 //     mini pages are "functionally identical to full Freedom UI pages", so
 //     handlers, validators and converters port as on any page.
+//   - In the CRM bundle "New" in the Contacts section opens Contacts_MiniPage
+//     (modal), not the form page; "open full page" then creates a NEW form
+//     page view model (observed on 10.1.796, tools/verify). Logic needed on
+//     add must be on the mini page too.
 //   - A recordId placed in crt.OpenPageRequest `parameters` instead of
 //     modelInitConfigs is ignored: the mini page opens as an empty new record.
 //
@@ -113,8 +117,17 @@ define("UsrMyEntity_MiniPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SC
 				request: "crt.HandleViewModelInitRequest",
 				handler: async (request, next) => {
 					const result = await next?.handle(request);
-					request.$context.UsrIsNew =
-						await request.$context.getPrimaryModelMode() === "create";
+					// The mode is "init" in the init handler (observed on 10.1.796):
+					// read it once the record attributes have loaded.
+					request.$context.events$.subscribe(async (evt) => {
+						if (evt?.type !== "finish-load-model-attributes") {
+							return;
+						}
+						const mode = await request.$context.getPrimaryModelMode();
+						if (mode !== "init") {
+							request.$context.UsrIsNew = mode === "create";
+						}
+					});
 					return result;
 				}
 			}

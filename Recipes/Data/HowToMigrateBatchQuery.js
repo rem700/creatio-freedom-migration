@@ -37,7 +37,8 @@
 //   operations only queue until commit. `await model.insertInTransaction(...)`
 //   gets a plain ITransactionOperation (not a Promise, per the typings) and
 //   returns at once. Empty FilterGroups in queued
-//   update/delete still mean "every row" (observed).
+//   update/delete still mean "every row" (observed; on 10.1.796 an empty group
+//   loaded the same rows as no filter - tools/verify; writes not tested).
 //
 // See: Recipes/Data/HowToMigrateInsertUpdateDelete.js
 // Applies: Creatio 8.1+ (needs @creatio-devkit/common 0.831.0+ for TransactionFactoryService); Classic UI 7.x–8.x

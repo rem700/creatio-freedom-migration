@@ -14,7 +14,8 @@
 //   this.sandbox.publish("UpdateCardProperty", { key: "UsrTotal", value: v }, [this.sandbox.id])
 //                                            ->  request.$context.PDS_UsrTotal_b2c3d4e = v
 //   this.sandbox.publish("GetCardState", ...) ->  await request.$context.getPrimaryModelMode()
-//                                                ("create" | "update"; observed)
+//                                                ("create" | "update" once loaded, "init" while
+//                                                loading; verified on Creatio 10.1.796, tools/verify)
 //   "SaveRecord" message to the page         ->  executeRequest crt.SaveRecordRequest { preventCardClose: true }
 //   page: this.updateDetail({ detail: "UsrMyDetail" })
 //                                            ->  executeRequest crt.LoadDataRequest

@@ -16,8 +16,8 @@
 //   this.get("Id")                           ->  await request.$context.Id (or the generated
 //                                               PDS_Id_... attribute of the page)
 //   this.set("IsChanged", true)              ->  no direct equivalent; assigning a data-source
-//                                               attribute marks the page dirty (HasUnsavedData,
-//                                               observed)
+//                                               attribute marks the page dirty (HasUnsavedData;
+//                                               verified on Creatio 10.1.796, tools/verify)
 //   this.get("Resources.Strings.X")          ->  await request.$context.Resources.Strings.X
 //   value inside a method with `this`        ->  pass request.$context to helper functions
 //   detail rows: this.get("Collection")      ->  await request.$context.<ListAttribute>: an ARRAY
@@ -32,6 +32,10 @@
 //     See: Recipes/Attributes/HowToMigrateAttributeDeclaration.js
 //   - Writing a lookup with only `value` shows an empty caption, as in Classic.
 //   - Assigning to an attribute fires its change handlers immediately.
+//   - Assigning a data-source attribute sets HasUnsavedData, and writing the
+//     original value back does NOT reset it; writes to virtual attributes do
+//     not set it (verified on Creatio 10.1.796, tools/verify). Write only when
+//     the value differs.
 //
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   `if (request.$context.PDS_UsrIsPaid_b2c3d4e)` without await is ALWAYS

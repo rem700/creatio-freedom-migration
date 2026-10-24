@@ -22,8 +22,14 @@
 //   - Classic reads values synchronously; Freedom must `await` every $context read.
 //   - The attribute name changes: Classic "UsrParent" becomes a generated
 //     Freedom attribute such as "PDS_UsrParent_b2c3d4e". Read it off the real schema.
-//   - The data source name is the lookup attribute + "_List_DS". A wrong name
-//     fails silently: no error, no filter.
+//   - The data source name is the lookup attribute + "_List_DS" (verified on
+//     Creatio 10.1.796, tools/verify: "Owner_List_DS" on a stock contact
+//     page). A wrong name fails silently: no error, no filter.
+//   - When crt.LoadDataRequest runs (observed on 10.1.796, tools/verify): at
+//     page load only "PageParameters" and "PDS" go through it; list data
+//     sources (e.g. AddressListDS, CareerListDS) load about 3 s later, after
+//     render; a lookup's "<attr>_List_DS" only when its dropdown opens, with
+//     loadType "reload". Do not expect the lookup request at page load.
 //   - Since 8.0.10 a lookup list requests its data only ONCE, so a filter that
 //     depends on another field may apply to the first open only. It was reported
 //     still present after 8.1.x (May 2024, CustomerFX article comments). What

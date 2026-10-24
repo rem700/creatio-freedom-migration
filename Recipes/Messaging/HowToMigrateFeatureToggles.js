@@ -34,7 +34,7 @@
 //     refresh after switching a feature) is not documented for FeatureService;
 //     test before telling users "it applies immediately".
 //   - The code is a plain string; an unknown feature reads as disabled
-//     (observed).
+//     (verified on Creatio 10.1.796, tools/verify).
 //   - A toggle hides client behaviour only; check it on the server too.
 //
 // SILENT FAILURE WHEN PORTED MECHANICALLY

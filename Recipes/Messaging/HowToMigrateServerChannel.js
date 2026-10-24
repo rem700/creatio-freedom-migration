@@ -30,8 +30,10 @@
 //
 // DOES NOT CARRY OVER ONE-TO-ONE
 //   - Destroy is not where cleanup goes: Academy puts listener cleanup in the
-//     Pause handler, and crt.HandleViewModelDestroyRequest is observed not to
-//     fire on ordinary navigation (the view model is paused and resumed).
+//     Pause handler, and crt.HandleViewModelDestroyRequest does not fire on
+//     navigation to another section: only Pause does, and Back resumes the
+//     same view model; the close button runs Pause, then Destroy (verified on
+//     Creatio 10.1.796, tools/verify).
 //     See: Recipes/Lifecycle/HowToMigrateDestroyAndCleanup.js
 //   - subscribe() is async. Store the RESOLVED Subscription, not the promise,
 //     or `unsubscribe is not a function` on pause.

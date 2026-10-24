@@ -36,7 +36,10 @@
 //     ServiceHelper took the service and method names instead. Portal users
 //     still need an [SspServiceRoute] service; test the URL prefix from a
 //     portal session before relying on it.
-//   - The CSRF header is added for you, like ServiceHelper did (observed).
+//   - The CSRF header is added for you, like ServiceHelper did (verified on
+//     Creatio 10.1.796, tools/verify: at fetch level the header is named
+//     crt_csrf, not BPMCSRF; the BPMCSRF cookie exists). A 404 rejects the
+//     promise ("Http failure response ... 404").
 //
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   Porting `response.GetDiscountResult` as-is reads a property of the HTTP
