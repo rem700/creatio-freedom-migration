@@ -137,7 +137,7 @@ the same claim share one number. "-" = not checkable from a page (reason given).
 | 33 | An unknown feature code reads as disabled | Messaging/HowToMigrateFeatureToggles.js | #33 | Confirmed on 10.1.796: unknown feature -> false |
 | 34 | `executeProcessByName` waits until the end or a user task | Messaging/HowToMigrateProcessLaunch.js | - needs a test process | |
 | 35 | A wrong (case-mismatched) process parameter code is ignored without an error | Messaging/HowToMigrateProcessLaunch.js; Pitfalls/MigrationPitfalls.js | - needs a test process | |
-| 36 | SelectionState shape `{ type: "specific", selected }` / `{ type: "all", unselected }` | Sections/HowToMigrateSectionActions.js; Strategy/ApiMappingReference.js | #36 (step 11) | Partial on 10.1.796: null with no selection; the "specific" / "all" shapes not checked |
+| 36 | SelectionState shape `{ type: "specific", selected }` / `{ type: "all", unselected }` | Sections/HowToMigrateSectionActions.js; Strategy/ApiMappingReference.js | #36 (step 11) | Partial on 10.1.796: null with no selection; the "specific" / "all" shapes not checked: the stock detail lists on Contacts_FormPage (Job experience, Addresses) have no multi-select mode (list menu offers only Export to Excel / Data import) |
 | 37 | A merge on `filterAttributes` replaces the whole array | Sections/HowToMigrateSectionFilters.js | - list page; compare the merged schema | |
 | 38 | Custom code, business rules, lookups and localisation do not come along when a section is moved | Strategy/HowToReplaceClassicPageWithFreedomPage.js | - section move procedure | |
 | 39 | A Base7xViewElement custom element can load a Classic module (community pattern) | Strategy/HowToRunClassicAndFreedomSideBySide.js | - needs that element | |
@@ -149,7 +149,7 @@ Extra checks (not marked "observed" in the recipes, but needed to verify them):
 | # | Claim | Recipe file(s) under Recipes/ | Check | Result |
 |---|---|---|---|---|
 | 42 | A lookup's list data source is `<lookup attr>_List_DS`; list and page data source names | Attributes/HowToMigrateLookupFilter.js | #42 | Confirmed on 10.1.796: `Owner_List_DS` (= `<attr>_List_DS`), only when the dropdown opens (loadType "reload"); at load only PageParameters and PDS; AddressListDS / CareerListDS ~3 s later |
-| 43 | What crt.ShowDialogRequest / DialogService resolve to on Escape / X (undocumented) | UI/HowToMigrateDialogs.js | #43 (step 5) | On 10.1.796: Escape -> undefined, OK -> "UsrVerifyOk" (string), same for crt.ShowDialogRequest and DialogService.open; X not recorded |
+| 43 | What crt.ShowDialogRequest / DialogService resolve to on Escape / X (undocumented) | UI/HowToMigrateDialogs.js | #43 (step 5) | On 10.1.796: Escape -> undefined, OK -> "UsrVerifyOk" (string), same for crt.ShowDialogRequest and DialogService.open. The dialog shows no X button on 10.1.796, so the X case does not arise |
 | 44 | Platform version and which devkit services exist at runtime | Strategy/VersionCompatibilityReference.js | #44 | 10.1.796.0; DialogService, MessageChannelService, ProcessEngineService, TransactionFactoryService, SchemaModalService, FeatureService, RightsService present |
 
 ## 5. Optional: claim #1 (8.0 section shape)
