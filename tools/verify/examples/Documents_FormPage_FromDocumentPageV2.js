@@ -31,7 +31,7 @@ define("Documents_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 	async function isNumberUnique(id, number) {
 		const model = await sdk.Model.create("Document");
 		const filter = new sdk.FilterGroup();
-		filter.addSchemaColumnFilterWithParameter(sdk.ComparisonType.NotEqual, "Id", id);
+		filter.addSchemaColumnFilterWithParameter(sdk.ComparisonType.Not_equal, "Id", id);
 		filter.addSchemaColumnFilterWithParameter(sdk.ComparisonType.Equal, "Number", number);
 		const rows = await model.load({
 			attributes: ["Id"],
@@ -118,7 +118,20 @@ define("Documents_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 					const number = await ctx.Number;
 					// The Classic code checked only a changed Number (and then called
 					// back twice when it was unchanged - a bug, not ported).
-					if (number && !(await isNumberUnique(id, number))) {
+					let unique = true;
+					try {
+						unique = !number || await isNumberUnique(id, number);
+					} catch (e) {
+						// An unhandled rejection here cancels the save with no message.
+						mlog("uniqueness check failed: " + e.message);
+						await ctx.executeRequest({
+							type: "crt.NotificationRequest",
+							$context: ctx,
+							message: "Could not check that the document number is unique."
+						});
+						return false;
+					}
+					if (!unique) {
 						mlog("save blocked: Number " + JSON.stringify(number) + " is not unique");
 						await ctx.executeRequest({
 							type: "crt.NotificationRequest",

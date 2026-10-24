@@ -57,8 +57,13 @@
 //
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   A wrong enum name (sdk.ComparisonType.EQUAL, .NotEqual,
-//   sdk.LogicalOperatorType.OR) is undefined; the filter degrades without an
-//   error. An EMPTY group means "no filter" in both generations: an Or group
+//   sdk.LogicalOperatorType.OR) is undefined. On 10.1.796 the load then
+//   rejects with "Error occurred during the query execution" (verified, see
+//   tools/verify/examples/Documents_FormPage_FromDocumentPageV2.js); inside a
+//   crt.SaveRecordRequest handler that error, if not caught, silently cancels
+//   the save - no message, the page just stays. The real names are Equal,
+//   Not_equal, Greater_or_equal, Is_null, Start_with ... and And / Or.
+//   tools/check_recipes.py rejects any other name. An EMPTY group means "no filter" in both generations: an Or group
 //   built in a loop over an empty list matches EVERY row - guard for zero
 //   items before you pass it to load, update or delete.
 //

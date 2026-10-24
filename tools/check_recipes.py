@@ -24,6 +24,14 @@ FREEDOM_MARK = "// ===== FREEDOM UI (8.1+)"
 STOCK_GUID = re.compile(r"-df11-|001d60e938c6|-f36b-1410-", re.I)
 GUID = re.compile(r"\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b", re.I)
 SEE = re.compile(r"\bRecipes/[\w/.-]+")
+# Enum members that exist at runtime in @creatio-devkit/common (checked on Creatio 10.1.796).
+SDK_ENUMS = {
+	"ComparisonType": {"Between", "Contain", "End_with", "Equal", "Exists", "Greater",
+		"Greater_or_equal", "Is_not_null", "Is_null", "Less", "Less_or_equal", "Not_contain",
+		"Not_end_with", "Not_equal", "Not_exists", "Not_start_with", "Start_with"},
+	"LogicalOperatorType": {"And", "Or"},
+}
+SDK_ENUM_USE = re.compile(r"\bsdk\.(ComparisonType|LogicalOperatorType)\.(\w+)")
 
 
 def check_recipe(r, issues: list[str]) -> None:
