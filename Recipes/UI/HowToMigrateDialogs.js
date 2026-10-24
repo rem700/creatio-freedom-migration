@@ -41,7 +41,8 @@
 //     button (X / Escape) is not documented. On 10.1.796 Escape resolved to
 //     undefined and a button to its key as a string, for both
 //     crt.ShowDialogRequest and DialogService.open (verified on Creatio
-//     10.1.796, tools/verify). Treat anything but your affirmative key as "no".
+//     10.1.796, tools/verify). The dialog showed no X button there (observed).
+//     Treat anything but your affirmative key as "no".
 //   - A message from resources is a promise: `await request.$context.Resources.Strings.X`,
 //     or the dialog reads "[object Promise]".
 //   - The toast's parameters (message, duration...) come from community testing,
