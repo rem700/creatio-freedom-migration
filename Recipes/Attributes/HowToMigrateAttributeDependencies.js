@@ -24,14 +24,17 @@
 //     during model load) is DEPRECATED in the typings. To keep a "clear the
 //     child" reaction from wiping stored data on load, act only when the user
 //     changed the value: compare value/oldValue AND check a flag set after
-//     the model finished loading.
+//     the model finished loading. finish-load-model-attributes fires several
+//     times (first with only {"Id": true}, then for lookups and lists): set
+//     the flag only when the payload holds the attribute you watch.
 //     See: Recipes/Lifecycle/HowToMigrateInitAndOnEntityInitialized.js
 //   - Do NOT filter out load-time changes for handlers that compute UI state
 //     (readonly, visible, required): the load-time call is what applies the
 //     state to a saved record.
-//   - The "change" handler gets no value in the request; read the attribute
-//     with await. It is used by designer-generated schemas but not described on
-//     Academy (observed).
+//   - The "change" handler gets no value in the request (keys: type,
+//     $context, scopes); read the attribute with await. It is used by
+//     designer-generated schemas but not described on Academy (verified on
+//     Creatio 10.1.796, tools/verify).
 //   - Wiring both routes for one attribute runs both. Pick one.
 //   - Attribute names are the generated ones (PDS_UsrService_a1b2c3d).
 //
@@ -42,7 +45,7 @@
 //   A handler that does not call `return next?.handle(request)` stops the
 //   chain: other packages' and stock handlers for the same change never run.
 //
-// Applies: Creatio 8.1+ (the load-finished flag relies on "finish-load-model-attributes", reported from 8.1.3, unverified); Classic UI 7.x–8.x
+// Applies: Creatio 8.1+ (the load-finished flag relies on "finish-load-model-attributes", reported from 8.1.3, first version unverified; seen on 10.1.796); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/customize-page-fields/overview
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: HandleViewModelAttributeChangeRequest)
 
@@ -112,7 +115,9 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHE
 				handler: async (request, next) => {
 					await next?.handle(request);
 					request.$context.events$.subscribe((evt) => {
-						if (evt?.type === "finish-load-model-attributes") {
+						// Fires several times; the first payload is only {"Id": true}.
+						if (evt?.type === "finish-load-model-attributes" &&
+							evt?.payload?.PDS_UsrService_a1b2c3d) {
 							request.$context.UsrIsModelLoaded = true;
 						}
 					});

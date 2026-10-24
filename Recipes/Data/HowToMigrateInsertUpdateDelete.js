@@ -48,7 +48,8 @@
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   An UpdateQuery / DeleteQuery without filters hits EVERY row of the table;
 //   so does a Freedom update/delete whose FilterGroup ended up empty (observed;
-//   an empty id list, or `value: new sdk.FilterGroup().add...()` which is
+//   on 10.1.796 an empty group loaded the same rows as no filter -
+//   tools/verify, writes not tested; an empty id list, or `value: new sdk.FilterGroup().add...()` which is
 //   undefined).
 //   Prefer PrimaryColumnValue for one row and guard filter lists for zero
 //   items. Also: the page does not refresh by itself - without a reload the

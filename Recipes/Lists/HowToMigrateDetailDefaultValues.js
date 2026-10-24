@@ -20,8 +20,9 @@
 //   open a specific page in add mode         ->  crt.OpenPageRequest { schemaName,
 //                                                    modelInitConfigs: [{ action: "add", defaultValues }] }
 //   onEntityInitialized + isAddMode() on the detail's page
-//                                            ->  crt.HandleViewModelInitRequest on that page, guarded by
-//                                                getPrimaryModelMode() === "create"
+//                                            ->  finish-load-model-attributes on that page, guarded by
+//                                                getPrimaryModelMode() === "create" ("init" in the
+//                                                init handler - observed on 10.1.796)
 //   (inline-created editable rows)           ->  no CreateRecordRequest; set values in a
 //                                                crt.SaveRecordsRequest handler
 //
@@ -35,7 +36,8 @@
 //   - A lookup default can be a Guid or { value, displayValue }; pass the
 //     object when you want the caption shown before the save.
 //   - The "$Id" binding resolves to the page record id in the designer-generated
-//     add button (observed); read the generated button before replacing it.
+//     add button (observed; on 10.1.796 $context.Id equals the record id -
+//     tools/verify, partial check); read the generated button before replacing it.
 //   - Defaults apply only when a record is created; editing never re-applies
 //     them, in both generations.
 //

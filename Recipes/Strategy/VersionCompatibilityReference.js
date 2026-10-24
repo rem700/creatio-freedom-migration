@@ -60,14 +60,26 @@
 //             in a crt.LoadDataRequest lookup filter is not      27 Feb 2024
 //             needed: assign the FilterGroup to
 //             request.parameters directly.
-//   8.1.3     request.$context.events$ "finish-load-model-       community thread; version
-//             attributes" event reported from this version.      UNVERIFIED (observed)
-//   8.3.2     The same event fires again when a list finishes    community thread (observed)
-//             loading.
-//   ?         getPrimaryModelMode() ("create" / "update")        in no devkit typings and on
-//                                                                no Academy page: observed only
+//   8.1.3     request.$context.events$ "finish-load-model-       community thread; first
+//             attributes" event reported from this version.      version UNVERIFIED; fires
+//                                                                on 10.1.796 (tools/verify)
+//   8.3.2     The same event fires again when a list finishes    community thread; on 10.1.796
+//             loading.                                           also for lookup and list
+//                                                                loads, several times during
+//                                                                record load (tools/verify)
+//   ?         getPrimaryModelMode() ("create" / "update";        in no devkit typings and on
+//             "init" while the page loads)                       no Academy page; exists on
+//                                                                10.1.796 (tools/verify)
+//   10.1.796  coreVersion "10.1.796.0". DialogService,           tools/verify on a CRM bundle
+//             MessageChannelService, ProcessEngineService,       trial, 2026-10-24
+//             TransactionFactoryService, SchemaModalService,
+//             FeatureService, RightsService all exist at
+//             runtime. Two ports break the page here: a crt.Input
+//             without "control" and a validator without a
+//             "message" param (see Pitfalls/MigrationPitfalls).
 //
-//   Recipes: Recipes/Strategy/SchemaStructureMappingReference.js,
+//   Recipes: Recipes/Pitfalls/MigrationPitfalls.js,
+//   Recipes/Strategy/SchemaStructureMappingReference.js,
 //   Recipes/Attributes/HowToMigrateLookupFilter.js,
 //   Recipes/Attributes/HowToMigrateDependentLookup.js,
 //   Recipes/Lifecycle/HowToMigrateInitAndOnEntityInitialized.js,
@@ -153,7 +165,11 @@
 //      version string in the published API; whether an on-site instance's
 //      static client files contain a readable package.json is not documented.
 //   4. Run tools/verify/UsrMigrationVerify_FormPage.js on a TEST instance: it
-//      logs coreVersion and which of these services exist.
+//      logs coreVersion and which of these services exist. Recorded so far:
+//      Creatio 10.1.796.0 (CRM bundle trial, 2026-10-24) - coreVersion
+//      "10.1.796.0"; DialogService, MessageChannelService,
+//      ProcessEngineService, TransactionFactoryService, SchemaModalService,
+//      FeatureService, RightsService all present.
 //
 // Record the result per environment (dev / test / prod can differ after a
 // partial update) next to the Applies line of the recipes you rely on.

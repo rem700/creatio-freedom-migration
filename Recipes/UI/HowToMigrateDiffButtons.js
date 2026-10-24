@@ -21,12 +21,15 @@
 //   ButtonEnums.style.RED                     ->  "color": "warn"
 //   ButtonEnums.style.DEFAULT / GREY          ->  "color": "default"
 //   parentName "LeftContainer" (command bar)  ->  parentName "ActionButtonsContainer"
-//                                                  (observed in the stock form page; check
-//                                                  the parent schema of YOUR page)
+//                                                  (verified on Creatio 10.1.796, tools/verify,
+//                                                  in a stock form page; check the parent
+//                                                  schema of YOUR page)
 //   "layout": { column, row, colSpan, rowSpan, layoutName }  (0-based, 24 columns)
 //                                             ->  "layoutConfig": { column, row, colSpan, rowSpan }
 //                                                  (1-based CSS grid; only inside a crt.GridContainer)
 //   this.isAddMode() || this.isCopyMode()     ->  await request.$context.getPrimaryModelMode() === "create"
+//                                                  (after load: it is "init" in the init handler -
+//                                                  observed on 10.1.796)
 //
 // DOES NOT CARRY OVER ONE-TO-ONE
 //   - crt.Button has `disabled`, not `enabled` (Academy button reference).
@@ -147,8 +150,17 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHE
 				request: "crt.HandleViewModelInitRequest",
 				handler: async (request, next) => {
 					await next?.handle(request);
-					const mode = await request.$context.getPrimaryModelMode();
-					request.$context.UsrCanRun = mode !== "create";
+					// The mode is "init" until the record has loaded: read it on
+					// finish-load-model-attributes and skip "init".
+					request.$context.events$.subscribe(async (evt) => {
+						if (evt?.type !== "finish-load-model-attributes") {
+							return;
+						}
+						const mode = await request.$context.getPrimaryModelMode();
+						if (mode !== "init") {
+							request.$context.UsrCanRun = mode !== "create";
+						}
+					});
 				}
 			},
 			{

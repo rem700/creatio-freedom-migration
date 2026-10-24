@@ -11,7 +11,9 @@
 //   this.callParent([wrapper, this])        ->  (nothing: field validators run inside next)
 //   this.validateResponse(response)         ->  (nothing: a failed field validator makes next
 //                                               resolve falsy and the platform shows the error
-//                                               - observed)
+//                                               - observed, unverified for data-source fields;
+//                                               on a VIRTUAL attribute it does not block the
+//                                               save: next resolved true on 10.1.796)
 //   Terrasoft.chain(fn1, fn2, ..., this)    ->  sequential `await` statements
 //   callback.call(scope, { success: false,  ->  show a message, `return false;` (next not called)
 //     message: msg })
@@ -33,6 +35,10 @@
 //   - A brand-new record has no rows in related entities yet; a "detail must
 //     have rows" check on create needs to read the list attribute on the page
 //     instead of the database.
+//   - A validator that fails on a virtual (non-data-source) attribute does
+//     not block the save: `await next.handle()` resolved true and the record
+//     was saved (observed on 10.1.796, tools/verify). Check such values in
+//     the save handler yourself.
 //   - Report failure with a message (crt.NotificationRequest or
 //     crt.ShowDialogRequest); there is no response object to carry it.
 //

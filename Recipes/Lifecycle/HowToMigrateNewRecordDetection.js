@@ -2,14 +2,15 @@
 // Classic UI asks the page for its card state: this.isAddMode(),
 // this.isCopyMode(), this.isEditMode(), or this.get("CardState") against
 // ConfigurationEnums.CardStateV2. Freedom UI pages answer "is this record
-// new?" with `await request.$context.getPrimaryModelMode()`, observed to
-// return "create" for an unsaved record and "update" for an existing one. The
-// method appears in community threads but is not in the @creatio-devkit/common
-// typings: treat it and its values as observed, not contractual.
+// new?" with `await request.$context.getPrimaryModelMode()`: "create" for an
+// unsaved record and "update" for an existing one, but "init" while the page
+// loads (verified on Creatio 10.1.796, tools/verify). The method appears in
+// community threads but is not in the @creatio-devkit/common typings: treat
+// it and its values as not contractual.
 //
 // API MAP
 //   this.isAddMode()                         ->  await request.$context.getPrimaryModelMode() === "create"
-//                                               (values observed)
+//                                               (after load; "init" before)
 //   this.isEditMode()                        ->  await request.$context.getPrimaryModelMode() === "update"
 //   this.isCopyMode()                        ->  no documented separate value (see below)
 //   this.get("CardState") === CardStateV2.ADD ->  same getPrimaryModelMode() check
@@ -26,23 +27,34 @@
 //     is not documented; test it on your version before relying on it.
 //   - The mode is asynchronous, so a binding cannot call it the way Classic
 //     bound "visible" to isAddMode. Compute a boolean attribute instead.
-//   - In the init handler the mode is known, but the record is not loaded yet.
-//     Defaults for a new record belong after the model is loaded.
+//   - In the init handler the mode is NOT known yet: it returns "init", and
+//     still does at the first finish-load-model-attributes events. It turns
+//     "create" / "update" only once the record data is loaded (verified on
+//     Creatio 10.1.796, tools/verify). Read it in a finish-load handler and
+//     ignore "init"; defaults for a new record belong there too.
 //     See: Recipes/Lifecycle/HowToMigrateInitAndOnEntityInitialized.js
 //   - After the first successful save of a new record the mode becomes
-//     "update" (observed). Recompute any "is new" flag after saving.
-//   - HasUnsavedData can be true right after load (calculated columns,
-//     forward references - reported by the community); it is not a "new
-//     record" test.
+//     "update" (verified on Creatio 10.1.796, tools/verify). Recompute any
+//     "is new" flag after saving.
+//   - HasUnsavedData is true about 3 ms after init for a NEW record and false
+//     for an existing one during load (verified on Creatio 10.1.796,
+//     tools/verify); the community also reports it true after load of
+//     existing records (calculated columns, forward references). It is not a
+//     "new record" test.
+//   - In the CRM bundle, "New" in a section opens the mini page
+//     (Contacts_MiniPage on Contacts), not the form page; the form page gets a
+//     NEW view model when the mini page is expanded (observed on 10.1.796).
+//     See: Recipes/Sections/HowToMigrateMiniPage.js
 //
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   Porting the anti-pattern "no Id means new" fails exactly as it did in
-//   Classic: a new Freedom UI record already holds a generated Id, so
-//   `if (!id)` is always false and the "new record" branch never runs.
-//   Forgetting `await` compares a Promise with "create": always false, also
-//   silently.
+//   Classic: a new Freedom UI record already holds a generated Id at init
+//   (verified on Creatio 10.1.796, tools/verify), so `if (!id)` is always
+//   false and the "new record" branch never runs. Forgetting `await`
+//   compares a Promise with "create": always false, also silently. So does
+//   checking the mode in the init handler, where it is still "init".
 //
-// Applies: Creatio 8.1+ (getPrimaryModelMode is undocumented and in no devkit typings; first version unknown); Classic UI 7.x–8.x
+// Applies: Creatio 8.1+ (getPrimaryModelMode is undocumented and in no devkit typings; first version unknown; "init" during load observed on 10.1.796); Classic UI 7.x–8.x
 // Source: https://community.creatio.com/questions/correct-way-unsubscribe-requestcontextevents-crthandleviewmodelinitrequest
 // Source: https://www.npmjs.com/package/@creatio-devkit/common (typings: ModelInPageAction)
 
@@ -82,7 +94,10 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHE
 
 	async function refreshNewRecordFlag($context) {
 		const mode = await $context.getPrimaryModelMode();
-		$context.UsrIsNewRecord = mode === "create";
+		// "init" while the record loads: not an answer yet.
+		if (mode !== "init") {
+			$context.UsrIsNewRecord = mode === "create";
+		}
 	}
 
 	return {
@@ -112,7 +127,13 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHE
 				request: "crt.HandleViewModelInitRequest",
 				handler: async (request, next) => {
 					await next?.handle(request);
-					await refreshNewRecordFlag(request.$context);
+					// The mode is still "init" here: ask again when the record
+					// attributes have loaded (the event fires several times).
+					request.$context.events$.subscribe(async (evt) => {
+						if (evt?.type === "finish-load-model-attributes") {
+							await refreshNewRecordFlag(request.$context);
+						}
+					});
 				}
 			},
 			{

@@ -90,8 +90,11 @@
 //   - Writing the total marks the page as changed, like UpdateCardProperty did;
 //     write only when the value differs. Both halves sum only the rows the
 //     list has loaded - a stored total belongs on the server.
-//   - finish-load-model-attributes is reported from 8.1.3 (observed); the
-//     attribute-change route also works where it does not fire.
+//   - finish-load-model-attributes is reported from 8.1.3 (first version
+//     unverified); the attribute-change route also works where it does not
+//     fire. It fires several times during load, the first time with only
+//     {"Id": true} (verified on Creatio 10.1.796, tools/verify): the loaded
+//     flag waits for the payload that carries the watched attribute.
 //
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   The page opens, saves and looks finished, yet: the list shows every row of
@@ -646,7 +649,9 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA
 				handler: async (request, next) => {
 					const result = await next?.handle(request);
 					request.$context.events$.subscribe((evt) => {
-						if (evt?.type === "finish-load-model-attributes") {
+						// Fires several times; the first payload is only {"Id": true}.
+						if (evt?.type === "finish-load-model-attributes" &&
+							evt?.payload?.PDS_UsrCountry_b2c3d4e) {
 							request.$context.UsrIsModelLoaded = true;
 						}
 					});

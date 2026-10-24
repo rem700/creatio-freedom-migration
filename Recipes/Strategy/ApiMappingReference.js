@@ -37,7 +37,7 @@
 //     type: VIRTUAL_COLUMN, value } }
 //   attributes.X.dependencies                "change" key / HandleViewModelAttributeChangeRequest  Recipes/Attributes/HowToMigrateAttributeDependencies.js
 //   this.on("change:X", fn, this)            crt.HandleViewModelAttributeChangeRequest    Recipes/Attributes/HowToMigrateAttributeDependencies.js
-//   this.get("IsEntityInitialized")          "finish-load-model-attributes" flag (8.1.3+, observed) Recipes/Attributes/HowToMigrateAttributeDependencies.js
+//   this.get("IsEntityInitialized")          "finish-load-model-attributes" flag (8.1.3+; fires several times - check payload; verified on 10.1.796) Recipes/Attributes/HowToMigrateAttributeDependencies.js
 //   "enabled"/"visible": { bindTo: "X" }     "readonly"/"disabled"/"visible": "$X"        Recipes/Attributes/HowToMigrateEnabledVisibleRequired.js
 //   isRequired / columns.X.isRequired        crt.Required + enable/disableAttributeValidator  Recipes/Attributes/HowToMigrateEnabledVisibleRequired.js
 //   lookupListConfig.filter                  crt.LoadDataRequest on "<attr>_List_DS"      Recipes/Attributes/HowToMigrateLookupFilter.js
@@ -50,7 +50,7 @@
 // ===== PAGE LIFECYCLE ========================================================
 //
 //   init()                                   crt.HandleViewModelInitRequest               Recipes/Lifecycle/HowToMigrateInitAndOnEntityInitialized.js
-//   onEntityInitialized()                    events$ "finish-load-model-attributes"       Recipes/Lifecycle/HowToMigrateInitAndOnEntityInitialized.js
+//   onEntityInitialized()                    events$ "finish-load-model-attributes" (not the first one) Recipes/Lifecycle/HowToMigrateInitAndOnEntityInitialized.js
 //   this.callParent(arguments)               await next?.handle(request)                  Recipes/Lifecycle/HowToMigrateInitAndOnEntityInitialized.js
 //   save() / onSaved()                       crt.SaveRecordRequest (before/after next)    Recipes/Lifecycle/HowToMigrateSaveOverride.js
 //   this.save({ isSilent: true })            crt.SaveRecordRequest, preventCardClose      Recipes/Lifecycle/HowToMigrateSaveOverride.js
@@ -91,7 +91,7 @@
 // ===== SECTIONS ==============================================================
 //
 //   getSectionActions()                      crt.Button "clickMode": "menu" + crt.MenuItem  Recipes/Sections/HowToMigrateSectionActions.js
-//   SelectedRows / ActiveRow                 DataTable_SelectionState (observed shape)    Recipes/Sections/HowToMigrateSectionActions.js
+//   SelectedRows / ActiveRow                 DataTable_SelectionState (observed shape; null if none selected) Recipes/Sections/HowToMigrateSectionActions.js
 //   fixed filters / section filters          list page filter attributes                  Recipes/Sections/HowToMigrateSectionFilters.js
 //   grid columns (profile / getGridColumns)  crt.DataGrid "columns"                       Recipes/Sections/HowToMigrateGridColumns.js
 //   mini page (MiniPage schema)              Freedom UI mini page / crt.OpenPageRequest   Recipes/Sections/HowToMigrateMiniPage.js

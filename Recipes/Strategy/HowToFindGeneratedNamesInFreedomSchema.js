@@ -34,6 +34,10 @@
 //     parent to see them.
 //   - A stock or template field may be named without a suffix or with
 //     another pattern (observed); the rule is "read it", not "build it".
+//     Stock CRM bundle pages use short names (Owner, Account, JobTitle; list
+//     CareerList on data source CareerListDS, lookup list Owner_List_DS -
+//     observed on 10.1.796, tools/verify): the PDS_<Column>_<suffix> pattern
+//     applies to fields added in the designer.
 //   - Element names are NOT DOM ids; do not build selectors from them.
 //
 // SILENT FAILURE WHEN PORTED MECHANICALLY

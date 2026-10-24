@@ -28,8 +28,21 @@
 //     equivalent; the save handler re-checks both at save time.
 //   - The type name carries your prefix ("usr.*"); the attribute key
 //     ("ValidatePhone") is what enable/disableAttributeValidator take.
-//   - The input must bind the attribute with "control"; a field bound with
-//     "value" is not validated and shows no error (observed).
+//   - Every crt.Input must bind its attribute with "control". On 10.1.796 a
+//     crt.Input with "value" and no "control" BREAKS THE WHOLE PAGE: platform
+//     code in crtOnViewModelInit runs control.replace("$", "") for every
+//     crt.Input, throws a TypeError, and the page stays behind the loading
+//     mask (observed on 10.1.796, tools/verify).
+//   - Validators attached to an attribute run on every keystroke of a
+//     control-bound input (verified on Creatio 10.1.796, tools/verify).
+//   - Declare { "name": "message" } in the validator type's "params". On
+//     10.1.796 the platform reads config.message and, when "message" is not
+//     declared there, throws "Property message is not defined in validator
+//     params config": the page never opens (observed on 10.1.796,
+//     tools/verify).
+//   - A validator that fails on a virtual (non-data-source) attribute does
+//     NOT block the save (observed on 10.1.796, tools/verify). Put checks
+//     that must stop a save on data-source attributes or in the save handler.
 //   - A message is localised with "#ResourceString(X)#" in the attribute's
 //     validator params (Academy); a `message` set there wins over the one the
 //     validator function builds. A literal also works.
@@ -42,10 +55,13 @@
 //   so Freedom UI treats every value as invalid; returning it with a message
 //   for invalid input shows no text. A validator declared in `validators` but
 //   never attached to an attribute never runs.
+//   Two mechanical ports are NOT silent on 10.1.796: a crt.Input bound with
+//   "value" only, and a validator type without "message" in its "params"
+//   both stop the page from opening (see above).
 //
 // See: Recipes/Lifecycle/HowToMigrateAsyncValidate.js
 // See: Recipes/Attributes/HowToMigrateEnabledVisibleRequired.js
-// Applies: Creatio 8.1+; Classic UI 7.x–8.x
+// Applies: Creatio 8.1+ (page-breaking "control" / "message" checks observed on 10.1.796); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/platform-customization/freedom-ui/customize-page-fields/overview
 // Source: https://academy.creatio.com/node/541750 (Classic UI: validate a field on a record page)
 
@@ -85,7 +101,8 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHE
 				"values": {
 					"type": "crt.Input",
 					"label": "$Resources.Strings.PDS_UsrPhone_a1b2c3d",
-					// "control", not "value": only a control binding is validated.
+					// "control", not "value": every crt.Input needs "control"
+					// (without it the page does not open on 10.1).
 					"control": "$PDS_UsrPhone_a1b2c3d"
 				},
 				"parentName": "SideAreaProfileContainer",
@@ -128,6 +145,7 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHE
 						return { "usr.PhoneFormat": { message: config.message } };
 					};
 				},
+				// Declare "message": on 10.1 the page does not open without it.
 				"params": [
 					{ "name": "message" }
 				],

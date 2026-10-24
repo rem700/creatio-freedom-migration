@@ -38,8 +38,10 @@
 //   - sdk.DialogService first appears in @creatio-devkit/common 0.814.0
 //     (absent in 0.811.0); crt.ShowDialogRequest needs no devkit at all.
 //   - What the promise resolves to when the user closes the dialog without a
-//     button (X / Escape) is not documented: treat anything but your
-//     affirmative key as "no".
+//     button (X / Escape) is not documented. On 10.1.796 Escape resolved to
+//     undefined and a button to its key as a string, for both
+//     crt.ShowDialogRequest and DialogService.open (verified on Creatio
+//     10.1.796, tools/verify). Treat anything but your affirmative key as "no".
 //   - A message from resources is a promise: `await request.$context.Resources.Strings.X`,
 //     or the dialog reads "[object Promise]".
 //   - The toast's parameters (message, duration...) come from community testing,

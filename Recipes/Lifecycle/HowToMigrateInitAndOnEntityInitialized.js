@@ -4,7 +4,7 @@
 // defaults for a new record). Freedom UI has one start-up request,
 // crt.HandleViewModelInitRequest, and it fires BEFORE the record data is
 // loaded. Record-dependent logic moves to the "finish-load-model-attributes"
-// event of request.$context.events$ (reported from 8.1.3; version unverified)
+// event of request.$context.events$ (reported from 8.1.3; seen on 10.1.796)
 // or to an attribute-change handler.
 //
 // API MAP
@@ -12,9 +12,10 @@
 //                                               await next?.handle(request) FIRST
 //   onEntityInitialized: function() {...}   ->  request.$context.events$.subscribe(evt =>
 //                                               evt.type === "finish-load-model-attributes")
-//                                               (8.1.3+ observed), guarded by a one-shot flag
+//                                               whose payload holds the attributes you need,
+//                                               guarded by a one-shot flag
 //   this.isAddMode() / this.isCopyMode()    ->  await request.$context.getPrimaryModelMode()
-//                                               === "create" (value observed; see
+//                                               === "create" once loaded ("init" before; see
 //                                               HowToMigrateNewRecordDetection)
 //   this.get("UsrDueDate")                  ->  await request.$context.PDS_UsrDueDate_a1b2c3d
 //   this.set("UsrDueDate", v)               ->  request.$context.PDS_UsrDueDate_a1b2c3d = v
@@ -26,29 +27,40 @@
 //   - There is no "record is loaded" hook with a guaranteed contract. A value set
 //     in the init handler for a data-source attribute can be OVERWRITTEN when
 //     the record or its defaults arrive; a read can return undefined.
-//   - "finish-load-model-attributes" is reported from 8.1.3 (observed; the
-//     version is unverified). Where it does not fire, the usual route is
-//     crt.HandleViewModelAttributeChangeRequest, which also fires while the
-//     record loads.
-//   - evt.payload holds per-attribute true/false flags, NOT values; only
-//     attributes that are on the page appear in it (observed).
-//   - The event fires again when a list or detail finishes loading (reported
-//     on 8.3.2). Without a one-shot flag the "new record" default re-applies
-//     over what the user has typed. Unsubscribing was reported not to stop it.
+//   - "finish-load-model-attributes" is reported from 8.1.3 (first version
+//     unverified; it fires on 10.1.796 - verified, tools/verify). Where it does
+//     not fire, the usual route is crt.HandleViewModelAttributeChangeRequest,
+//     which also fires while the record loads.
+//   - It fires SEVERAL times during load (verified on Creatio 10.1.796,
+//     tools/verify): first with payload {"Id": true} only, then {}, then the
+//     full set of record attributes (~35 keys on a stock contact page), and
+//     again for every lookup and list load (keys like "Owner_List.value",
+//     "AddressList.AddressListDS_AddressType"). Code that reacts to the FIRST
+//     finish-load sees an empty record. Check the payload for the attributes
+//     you need, then set a one-shot flag; without the flag the "new record"
+//     default re-applies over what the user has typed. Unsubscribing was
+//     reported not to stop it.
+//   - evt.payload holds per-attribute flags (all true in the loads seen),
+//     NOT values (verified on Creatio 10.1.796, tools/verify).
+//   - getPrimaryModelMode() returns "init" at init and at the early
+//     finish-loads; "create" / "update" only once the record data is loaded
+//     (verified on Creatio 10.1.796, tools/verify).
 //   - onEntityInitialized re-ran after reloadEntity(); a Freedom UI view model
-//     is initialised once and RESUMED when the user comes back (observed).
+//     is initialised once and RESUMED when the user comes back; Resume also
+//     follows Init on the first open (verified on Creatio 10.1.796,
+//     tools/verify). Closing the page runs Pause, then Destroy.
 //   - Static defaults for a new record are better set as the column default in
 //     the entity schema: that works in both UIs and needs no code.
 //   - getPrimaryModelMode() is not in the @creatio-devkit/common typings; it
-//     appears in community threads; it and its values are observed, not
-//     contractual.
+//     appears in community threads and exists at runtime (verified on Creatio
+//     10.1.796, tools/verify); it and its values are not contractual.
 //
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   Moving the body of onEntityInitialized into the init handler compiles and
 //   runs, but every this.get() becomes an undefined read and every default you
 //   write is replaced by the loaded record a moment later. No error appears.
 //
-// Applies: Creatio 8.1+ ("finish-load-model-attributes" reported from 8.1.3, unverified; getPrimaryModelMode undocumented, in no devkit typings); Classic UI 7.x–8.x
+// Applies: Creatio 8.1+ ("finish-load-model-attributes" reported from 8.1.3, first version unverified; load sequence and modes observed on 10.1.796; getPrimaryModelMode undocumented, in no devkit typings); Classic UI 7.x–8.x
 // Source: https://academy.creatio.com/guides/dev/development-on-creatio-platform/front-end-development/freedom-ui/client-schema-freedomui/references/handlers
 // Source: https://community.creatio.com/questions/correct-way-unsubscribe-requestcontextevents-crthandleviewmodelinitrequest
 
@@ -121,12 +133,21 @@ define("UsrMyPage_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHE
 						if (evt?.type !== "finish-load-model-attributes") {
 							return;
 						}
+						// The event fires several times (first payload: {"Id": true}
+						// only; later ones for lookups and lists). Act on the one that
+						// loaded the record attributes this code reads.
+						if (!evt?.payload?.PDS_UsrName_b2c3d4e) {
+							return;
+						}
+						const mode = await request.$context.getPrimaryModelMode();
+						if (mode === "init") {
+							return;
+						}
 						if (await request.$context.UsrIsInitialLoadHandled) {
 							return;
 						}
 						request.$context.UsrIsInitialLoadHandled = true;
 
-						const mode = await request.$context.getPrimaryModelMode();
 						if (mode === "create") {
 							// payload carries flags, not values: is the field on the page?
 							if (evt?.payload?.PDS_UsrDueDate_a1b2c3d &&

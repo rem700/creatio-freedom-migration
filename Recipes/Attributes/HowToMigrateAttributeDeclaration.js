@@ -37,7 +37,12 @@
 //     (observed).
 //   - A Classic entity column was available on the view model even when no
 //     control showed it. In Freedom UI a column you read in code must have an
-//     attribute with modelConfig.path, or it is not loaded (observed).
+//     attribute with modelConfig.path, or it is not loaded (verified on
+//     Creatio 10.1.796, tools/verify: an undeclared column reads undefined).
+//   - Stock CRM bundle pages use short attribute names (Owner, Account,
+//     JobTitle; list CareerList with data source CareerListDS), not
+//     PDS_<Column>_<suffix> (observed on 10.1.796): the generated pattern
+//     applies to fields added in the designer. Read the names off the schema.
 //   - Every attribute a handler WRITES must be declared; writing an
 //     undeclared name updates nothing a binding can see.
 //   - Merging into one existing attribute uses path ["attributes", "<Name>"].
@@ -45,7 +50,8 @@
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   Copying the Classic block as-is (dataValueType, type: VIRTUAL_COLUMN keys
 //   inside a Freedom attribute) raises no error; the extra keys are simply not
-//   part of the Freedom UI attribute config (observed). Declaring an entity column
+//   part of the Freedom UI attribute config (verified on Creatio 10.1.796,
+//   tools/verify). Declaring an entity column
 //   under its bare name ("UsrName": {}) creates an EMPTY virtual attribute:
 //   it never loads the column and is never saved.
 //

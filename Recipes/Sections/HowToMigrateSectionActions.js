@@ -19,7 +19,9 @@
 //                                                guard the empty selection in the handler
 //   this.get("SelectedRows") / ActiveRow     ->  await request.$context.DataTable_SelectionState
 //                                                { type: "specific", selected: [...] } |
-//                                                { type: "all", unselected: [...] }   (observed shape)
+//                                                { type: "all", unselected: [...] }   (observed shape;
+//                                                null with no selection - verified on 10.1.796
+//                                                for a list on a form page, tools/verify)
 //   run a process per selected record        ->  crt.RunBusinessProcessRequest processRunType
 //                                                "ForTheSelectedRecords" + selection filter chain
 //   delete / tag selected                    ->  crt.DeleteRecordsRequest / crt.AddTagsInRecordsRequest

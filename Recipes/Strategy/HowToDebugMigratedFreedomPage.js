@@ -110,6 +110,14 @@
 //     never "done", and the page is stuck        not return next?.handle(...) or
 //                                                 threw; check the console for
 //                                                 an unhandled rejection.
+//   - the page never opens (splash / loading  -> on 10.1.796: "Property message
+//     mask stays), no logger line                is not defined in validator
+//                                                 params config" (validator type
+//                                                 without "message" in params), or
+//                                                 a TypeError on control.replace
+//                                                 (a crt.Input without "control")
+//                                                 - observed, see
+//                                                 Pitfalls/MigrationPitfalls 31-32.
 //   - a custom request logs twice             -> dispatched both declaratively
 //                                                 (button "clicked") and from
 //                                                 code (executeRequest).
@@ -138,9 +146,12 @@
 //   modelConfigDiff > dataSources      ->  PDS, GridDetail_x1y2z3aDS, ...
 //   viewConfigDiff                     ->  "control": "$PDS_UsrName_a1b2c3d" on each field,
 //                                          "items": "$GridDetail_x1y2z3a" on each list
-// A lookup's list data source is "<lookup attribute>_List_DS" (observed and
-// documented in community articles). When a name still looks wrong, the
-// logger in section 2 prints what the page actually uses.
+// A lookup's list data source is "<lookup attribute>_List_DS" (documented in
+// community articles; verified on Creatio 10.1.796, tools/verify). It goes
+// through crt.LoadDataRequest only when the dropdown opens, and list data
+// sources load after render, not with "PDS" (observed on 10.1.796). When a
+// name still looks wrong, the logger in section 2 prints what the page
+// actually uses.
 
 // ===== 5. NETWORK TAB =======================================================
 //

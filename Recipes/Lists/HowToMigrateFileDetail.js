@@ -35,8 +35,9 @@
 //     generations. In Freedom test getPrimaryModelMode() === "create", not an
 //     empty Id.
 //   - HttpClientService.post with a Blob body and the CSRF header added for
-//     you is observed, not documented; the endpoint parameters are the same
-//     as Classic's.
+//     you is observed, not documented (a CSRF header, named crt_csrf at fetch
+//     level, was seen on a JSON POST on 10.1.796 - tools/verify; Blob not
+//     tested); the endpoint parameters are the same as Classic's.
 //
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   viewElementName that does not match the crt.FileList `name` exactly: the

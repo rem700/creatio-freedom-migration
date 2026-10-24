@@ -42,7 +42,9 @@
 // SILENT FAILURE WHEN PORTED MECHANICALLY
 //   Keeping the Classic form "enabled": { "bindTo": "X" } or "isRequired" inside
 //   viewConfigDiff is not reported as an error; the key has no effect and the
-//   field stays editable / optional (observed). Academy: "Creatio applies
+//   field stays editable / optional (verified on Creatio 10.1.796,
+//   tools/verify: "enabled": false left the field editable, "isRequired"
+//   showed no asterisk). Academy: "Creatio applies
 //   validators to the attributes rather than visual elements" - a required
 //   check belongs on the attribute. A bare "$UsrCanEdit" bound
 //   to "readonly" without the inverting converter locks the field exactly when
