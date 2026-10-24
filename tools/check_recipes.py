@@ -26,12 +26,21 @@ GUID = re.compile(r"\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{1
 SEE = re.compile(r"\bRecipes/[\w/.-]+")
 # Enum members that exist at runtime in @creatio-devkit/common (checked on Creatio 10.1.796).
 SDK_ENUMS = {
-	"ComparisonType": {"Between", "Contain", "End_with", "Equal", "Exists", "Greater",
-		"Greater_or_equal", "Is_not_null", "Is_null", "Less", "Less_or_equal", "Not_contain",
-		"Not_end_with", "Not_equal", "Not_exists", "Not_start_with", "Start_with"},
-	"LogicalOperatorType": {"And", "Or"},
+    "ComparisonType": {"Between", "Contain", "End_with", "Equal", "Exists", "Greater",
+                       "Greater_or_equal", "Is_not_null", "Is_null", "Less", "Less_or_equal",
+                       "Not_contain", "Not_end_with", "Not_equal", "Not_exists",
+                       "Not_start_with", "Start_with"},
+    "LogicalOperatorType": {"And", "Or"},
 }
 SDK_ENUM_USE = re.compile(r"\bsdk\.(ComparisonType|LogicalOperatorType)\.(\w+)")
+
+
+def check_sdk_enums(rel: str, text: str, issues: list[str]) -> None:
+    """A misspelt sdk enum member is undefined at runtime and fails without a clear error."""
+    code = "\n".join(l for l in text.splitlines() if not l.lstrip().startswith("//"))
+    for enum, member in SDK_ENUM_USE.findall(code):
+        if member not in SDK_ENUMS[enum]:
+            issues.append(f"{rel}: sdk.{enum}.{member} does not exist (undefined at runtime)")
 
 
 def check_recipe(r, issues: list[str]) -> None:
@@ -59,6 +68,7 @@ def check_recipe(r, issues: list[str]) -> None:
     for g in GUID.findall(r.text):
         if STOCK_GUID.search(g):
             issues.append(f"{rel}: {g} looks like a real Creatio record id")
+    check_sdk_enums(rel, r.text, issues)
     for ref in SEE.findall(r.text):
         ref = ref.rstrip(".,;:)")
         target = ROOT / ref
@@ -89,6 +99,8 @@ def main() -> int:
     for r in book.recipes.values():
         check_recipe(r, issues)
     check_search(book, issues)
+    for path in sorted((ROOT / "tools" / "verify").rglob("*.js")):
+        check_sdk_enums(str(path.relative_to(ROOT)), path.read_text(encoding="utf-8"), issues)
     print(f"{len(book.recipes)} recipes checked")
     for i in issues:
         print("  - " + i)
